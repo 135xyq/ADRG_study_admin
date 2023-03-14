@@ -41,7 +41,6 @@ module.exports = {
         target: 'http://127.0.0.1:9000'
       }
     }
-    // before: require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that

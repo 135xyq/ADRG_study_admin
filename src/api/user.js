@@ -28,3 +28,12 @@ export function logout(data) {
     }
   })
 }
+
+// 修改密码
+export function updatePassword(data) {
+  return request({
+    url: '/admin/login/updatepassword',
+    method: 'post',
+    data
+  })
+}

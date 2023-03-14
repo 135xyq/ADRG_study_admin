@@ -1,24 +1,30 @@
 import request from '@/utils/request'
 
+// 登录
 export function login(data) {
   return request({
-    url: '/vue-admin-template/user/login',
+    url: '/admin/login/login',
     method: 'post',
     data
   })
 }
 
+// 获取管理员信息
 export function getInfo(token) {
   return request({
-    url: '/vue-admin-template/user/info',
+    url: '/admin/login/getInfo',
     method: 'get',
     params: { token }
   })
 }
 
-export function logout() {
+// 退出登录
+export function logout(data) {
   return request({
-    url: '/vue-admin-template/user/logout',
-    method: 'post'
+    url: '/admin/login/logout',
+    method: 'post',
+    data: {
+      token: data
+    }
   })
 }

@@ -6,15 +6,15 @@
         <h3 class="title">后台管理系统登录</h3>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="account">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="username"
-          v-model="loginForm.username"
+          ref="account"
+          v-model="loginForm.account"
           placeholder="用户名"
-          name="username"
+          name="account"
           type="text"
           tabindex="1"
           auto-complete="on"
@@ -48,13 +48,12 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
 
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
+    const validateAccount = (rule, value, callback) => {
+      if (value.trim().length < 1) {
         callback(new Error('请输入合法的用户名'))
       } else {
         callback()
@@ -69,11 +68,11 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        account: '',
+        password: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        account: [{ required: true, trigger: 'blur', validator: validateAccount }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       loading: false,

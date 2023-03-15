@@ -1,6 +1,17 @@
 <template>
   <div class="category-container">
-    <div class="search-container" />
+    <div class="search-container">
+      <el-form :inline="true" :model="form" class="demo-form-inline" size="mini">
+        <el-form-item>
+          <el-input v-model="form.name" placeholder="分类名称" />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" icon="el-icon-search" @click="onHandleSubmit">查询</el-button>
+          <el-button icon="el-icon-refresh" @click="onHandleReset">重置</el-button>
+          <el-button type="success" icon="el-icon-plus" @click="onHandleAdd">新增分类</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
     <div class="table-container">
       <el-table
         :data="tableData"
@@ -143,12 +154,36 @@ export default {
     async onHandleCurrentChange(page) {
       this.form.page = page
       await this.getData()
+    },
+    /**
+     * 关键词查询
+     * @returns {Promise<void>}
+     */
+    async onHandleSubmit() {
+      await this.getData()
+    },
+    /**
+     * 查询信息重置
+     * @returns {Promise<void>}
+     */
+    async onHandleReset() {
+      this.form = {
+        ...this.form,
+        name: ''
+      }
+      await this.getData()
+    },
+    onHandleAdd() {
+      console.log('add')
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.search-container{
+  margin: 20px 0 10px 20px;
+}
 .el-row {
   margin-bottom: 6px;
 }

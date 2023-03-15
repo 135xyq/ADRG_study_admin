@@ -136,6 +136,10 @@ export default {
       // 结束数据加载loading
       this.loading = false
     },
+    /**
+     * 修改分类
+     * @param data
+     */
     onHandleEdit(data) {
       this.childIsEdit = true
       this.childForm = {
@@ -179,14 +183,14 @@ export default {
      * @param id 分类id
      */
     onHandleGoToVideo(id) {
-      console.log('video', id)
+      this.$router.push({ name: 'Video', query: { id: id }})
     },
     /**
      * 跳转至文章列表页
      * @param id 分类id
      */
     onHandleGoToArticle(id) {
-      console.log('article', id)
+      this.$router.push({ name: 'Article', query: { id: id }})
     },
     /**
      * 修改每页显示数量

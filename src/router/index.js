@@ -58,13 +58,25 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/studysource/category',
     name: 'StudySource',
-    meta: { title: '学习资源', icon: 'icon-class="education' },
+    meta: { title: '学习资源', icon: 'el-icon-collection' },
     children: [
       {
         path: 'category',
         name: 'StudySourceCategory',
         component: () => import('@/views/StudySource/Category'),
         meta: { title: '分类', icon: 'table' }
+      },
+      {
+        path: 'video',
+        name: 'Video',
+        component: () => import('@/views/Video'),
+        meta: { title: '视频', icon: 'el-icon-video-camera' }
+      },
+      {
+        path: 'article',
+        name: 'Article',
+        component: () => import('@/views/Article'),
+        meta: { title: '文章', icon: 'el-icon-document' }
       }
     ]
   },

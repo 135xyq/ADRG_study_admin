@@ -63,3 +63,19 @@ div:focus {
 .app-container {
   padding: 20px;
 }
+
+// 表格样式
+.table_list_pic {width:38px; vertical-align: middle;}
+.table-bordered {
+  border: 1px solid #EBEBEB;
+}
+
+.table > tbody > tr > td {
+  border-top: 1px solid #e7eaec;
+  line-height: 1.42857;
+  padding: 8px;
+  vertical-align: middle;
+}
+.table .title{
+  background-color:#F5F5F6; font-weight:bold; text-align:right
+}

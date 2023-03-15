@@ -79,6 +79,11 @@ export const constantRoutes = [
         name: 'AppletConfig',
         component: () => import('@/views/Set/AppletConfig'),
         meta: { title: '小程序配置', icon: 'el-icon-s-tools' }
+      }, {
+        path: 'log',
+        name: 'Log',
+        component: () => import('@/views/Set/Log'),
+        meta: { title: '操作日志', icon: 'el-icon-date' }
       }
     ]
   },

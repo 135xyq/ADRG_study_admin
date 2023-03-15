@@ -19,6 +19,7 @@
 </template>
 
 <script>
+// 小程序配置页面
 import { addConfig, getConfig, updateConfig } from '@/api/config'
 
 export default {

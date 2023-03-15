@@ -4,56 +4,77 @@
     <div class="table-container">
       <el-table
         :data="tableData"
+        :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
+        border
+        stripe
         style="width: 100%"
         tooltip-effect="dark"
-        :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
-        stripe
-        border
       >
         <el-table-column
+          align="center"
           label="编号"
           prop="id"
           show-overflow-tooltip
           width="80"
-          align="center"
         />
         <el-table-column
+          align="center"
           label="名称"
           prop="name"
-          align="center"
           show-overflow-tooltip
         />
         <el-table-column
+          align="center"
           label="描述信息"
           prop="description"
-          align="center"
-          width="600"
           show-overflow-tooltip
+          width="600"
         />
         <el-table-column
+          align="center"
           label="创建日期"
           prop="create_time"
           show-overflow-tooltip
-          align="center"
         />
         <el-table-column
-          label="操作"
           align="center"
-          width="260"
           fixed="right"
+          label="操作"
+          width="260"
         >
           <template slot-scope="scope">
             <el-row class="el-row">
-              <el-button type="primary" icon="el-icon-edit" size="mini" @click="onHandleEdit(scope.row.id)">编辑分类</el-button>
-              <el-button type="danger" icon="el-icon-delete" size="mini" @click="onHandleDelete(scope.row.id)">删除分类</el-button>
+              <el-button icon="el-icon-edit" size="mini" type="primary" @click="onHandleEdit(scope.row.id)">编辑分类
+              </el-button>
+              <el-button icon="el-icon-delete" size="mini" type="danger" @click="onHandleDelete(scope.row.id)">删除分类
+              </el-button>
             </el-row>
             <el-row>
-              <el-button type="success" icon="el-icon-video-camera" size="mini" @click="onHandleGoToVedio(scope.row.id)">视频列表</el-button>
-              <el-button type="info" icon="el-icon-document" size="mini" @click="onHandleGoToArticle(scope.row.id)">文章列表</el-button>
+              <el-button
+                icon="el-icon-video-camera"
+                size="mini"
+                type="success"
+                @click="onHandleGoToVedio(scope.row.id)"
+              >视频列表
+              </el-button>
+              <el-button icon="el-icon-document" size="mini" type="info" @click="onHandleGoToArticle(scope.row.id)">
+                文章列表
+              </el-button>
             </el-row>
           </template>
         </el-table-column>
       </el-table>
+    </div>
+    <div class="page-container">
+      <el-pagination
+        :current-page="form.page"
+        :page-size="form.limit"
+        :page-sizes="[20, 30, 50, 100]"
+        :total="total"
+        layout="total, sizes, prev, pager, next, jumper"
+        @size-change="onHandleSizeChange"
+        @current-change="onHandleCurrentChange"
+      />
     </div>
   </div>
 </template>
@@ -106,13 +127,35 @@ export default {
     },
     onHandleGoToArticle(id) {
       console.log('article', id)
+    },
+    /**
+     * 修改每页显示数量
+     * @param limit
+     */
+    async onHandleSizeChange(limit) {
+      this.form.limit = limit
+      await this.getData()
+    },
+    /**
+     * 修改当前页码数
+     * @param page
+     */
+    async onHandleCurrentChange(page) {
+      this.form.page = page
+      await this.getData()
     }
   }
 }
 </script>
 
-<style scoped lang="scss">
-.el-row{
+<style lang="scss" scoped>
+.el-row {
   margin-bottom: 6px;
+}
+
+.page-container{
+  display: flex;
+  justify-content: right;
+  margin: 20px;
 }
 </style>

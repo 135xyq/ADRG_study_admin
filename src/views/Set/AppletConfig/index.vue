@@ -57,11 +57,13 @@ export default {
         updateConfig({
           ...this.configData,
           id: this.id
-        }).then(res => {
+        }).then(async res => {
           this.$message({
             message: res.msg,
             type: 'success'
           })
+          //  更新之后重新获取数据
+          await this.getConfigData()
         })
       } else {
         const res = await addConfig(this.configData)
@@ -69,6 +71,7 @@ export default {
           message: res.msg,
           type: 'success'
         })
+        await this.getConfigData()
       }
     }
   }

@@ -31,7 +31,7 @@ export function deleteCategory(data) {
 /**
  * 修改分类数据
  * @param data {Object}
- * id：修改数据的id  *name:分类名称 *description:分类描述 *status：状态
+ * id：修改数据的id  *name:分类名称 *description:分类描述 *status：状态 *sort排序
  * @returns {*}
  */
 export function update(data) {
@@ -45,7 +45,7 @@ export function update(data) {
 /**
  * 新增一个分类
  * @param data {Object}
- * name: 分类名称  *description：分类描述 *status：状态
+ * name: 分类名称  *description：分类描述 *status：状态 *sort: 排序
  * @returns {*}
  */
 export function add(data) {

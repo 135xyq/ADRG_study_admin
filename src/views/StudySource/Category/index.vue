@@ -46,6 +46,7 @@
           prop="name"
           show-overflow-tooltip
           width="250"
+          sortable
         />
         <el-table-column
           align="center"
@@ -70,6 +71,14 @@
             />
           </template>
         </el-table-column>
+        <el-table-column
+          align="center"
+          label="排序"
+          prop="sort"
+          show-overflow-tooltip
+          width="100"
+          sortable
+        />
         <el-table-column
           align="center"
           fixed="right"
@@ -170,7 +179,8 @@ export default {
         id: data.id,
         name: data.name,
         description: data.description,
-        status: data.status
+        status: data.status,
+        sort: data.sort
       }
       this.isShowDialog = true
     },
@@ -258,7 +268,8 @@ export default {
     onHandleAdd() {
       this.childIsEdit = false
       this.childForm = {
-        status: 1
+        status: 1,
+        sort: 1
       }
       this.isShowDialog = true
     },

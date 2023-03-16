@@ -88,11 +88,12 @@ export default {
         this.loding = false // 按钮加载结束
         return 0
       } else {
+        this.loding = false
         const res = await updatePassword({
           ...this.form,
           token: this.token
         })
-        this.loding = false // 按钮加载结束
+
         // 修改成功
         if (res.code === 0) {
           this.$message({
@@ -102,11 +103,6 @@ export default {
           // 修改成功需要 退出登录
           await this.logout()
           this.dialogFormVisible = false
-        } else {
-          this.$message({
-            message: res.msg,
-            type: 'error'
-          })
         }
       }
     },

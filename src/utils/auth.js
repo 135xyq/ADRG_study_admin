@@ -10,9 +10,7 @@ export function setToken(token) {
   // 计算过期时间
   // const millisecond = new Date().getTime()
   // const expiresTime = new Date(millisecond + 60 * 1000 * 7)
-  return Cookies.set(TokenKey, token, {
-    expires: 7
-  })
+  return Cookies.set(TokenKey, token)
 }
 
 export function removeToken() {

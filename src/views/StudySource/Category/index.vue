@@ -6,6 +6,18 @@
           <el-input v-model="form.name" placeholder="分类名称" />
         </el-form-item>
         <el-form-item>
+          <el-select v-model="form.status" clearable placeholder="分类状态" @change="onHandleSearchForStatusChange">
+            <el-option
+              label="未禁用"
+              :value="1"
+            />
+            <el-option
+              label="禁用"
+              :value="0"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item>
           <el-button icon="el-icon-search" type="primary" @click="onHandleSubmit">查询</el-button>
           <el-button icon="el-icon-refresh" @click="onHandleReset">重置</el-button>
           <el-button icon="el-icon-plus" type="success" @click="onHandleAdd">新增分类</el-button>
@@ -33,20 +45,31 @@
           label="名称"
           prop="name"
           show-overflow-tooltip
+          width="250"
         />
         <el-table-column
           align="center"
           label="描述信息"
           prop="description"
           show-overflow-tooltip
-          width="600"
         />
         <el-table-column
           align="center"
-          label="创建日期"
-          prop="create_time"
+          label="状态"
           show-overflow-tooltip
-        />
+          width="100"
+        >
+          <template slot-scope="scope">
+            <el-switch
+              v-model="scope.row.status"
+              :active-value="1"
+              :inactive-value="0"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              @change="onHandleStatusChange(scope.row.id,$event)"
+            />
+          </template>
+        </el-table-column>
         <el-table-column
           align="center"
           fixed="right"
@@ -80,7 +103,7 @@
       <el-pagination
         :current-page="form.page"
         :page-size="form.limit"
-        :page-sizes="[20, 30, 50, 100]"
+        :page-sizes="[10,20, 30, 50, 100]"
         :total="total"
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="onHandleSizeChange"
@@ -93,7 +116,7 @@
 
 <script>
 // 学习视频、文章的分类
-import { deleteCategory, page } from '@/api/studyCategory'
+import { deleteCategory, page, update } from '@/api/studyCategory'
 import Update from './Update'
 
 export default {
@@ -108,7 +131,8 @@ export default {
       form: {
         page: 1,
         limit: 20,
-        name: ''
+        name: '',
+        status: ''
       }, // 查询和分页数据
       total: 0, // 数据总数
       loading: false, // 是否在加载数据
@@ -145,7 +169,8 @@ export default {
       this.childForm = {
         id: data.id,
         name: data.name,
-        description: data.description
+        description: data.description,
+        status: data.status
       }
       this.isShowDialog = true
     },
@@ -222,7 +247,8 @@ export default {
     async onHandleReset() {
       this.form = {
         ...this.form,
-        name: ''
+        name: '',
+        status: ''
       }
       await this.getData()
     },
@@ -231,7 +257,9 @@ export default {
      */
     onHandleAdd() {
       this.childIsEdit = false
-      this.form = {}
+      this.childForm = {
+        status: 1
+      }
       this.isShowDialog = true
     },
     /**
@@ -243,6 +271,27 @@ export default {
       this.childIsEdit = false
       this.childForm = {}
 
+      await this.getData()
+    },
+    /**
+     * switch开关修改分类的状态
+     * @param id 分类id
+     * @param val 新状态
+     * @returns {Promise<void>}
+     */
+    async onHandleStatusChange(id, val) {
+      const res = await update({ id: id, status: val })
+      this.$message({
+        message: res.msg,
+        type: 'success'
+      })
+      await this.getData()
+    },
+    /**
+     * 状态下拉框改变自动请求数据
+     * @returns {Promise<void>}
+     */
+    async onHandleSearchForStatusChange() {
       await this.getData()
     }
   }

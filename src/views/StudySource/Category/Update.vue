@@ -8,6 +8,15 @@
         <el-form-item label="分类描述信息" label-width="120px">
           <el-input v-model="form.description" autocomplete="off" type="textarea" />
         </el-form-item>
+        <el-form-item label="状态" label-width="120px">
+          <el-switch
+            v-model="form.status"
+            :active-value="1"
+            :inactive-value="0"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+          />
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="onHandleCancel">取 消</el-button>

@@ -55,3 +55,14 @@ export function add(data) {
     data
   })
 }
+
+/**
+ * 获取分类列表
+ * @returns {*}
+ */
+export function getList() {
+  return request({
+    url: '/admin/studycategory/list',
+    method: 'post'
+  })
+}

@@ -32,8 +32,10 @@
         <el-form-item>
           <el-select v-model="form.category" clearable placeholder="分类查询" @change="onHandleSearchChange">
             <el-option
-              :value="1"
-              label="未禁用"
+              v-for="item in category"
+              :key="item.id"
+              :label="categoryStatus(item)"
+              :value="item.id"
             />
           </el-select>
         </el-form-item>
@@ -204,6 +206,7 @@
 
 import { getVideos } from '@/api/video'
 import { formateDate } from '@/utils/formate'
+import { getList } from '@/api/studyCategory'
 
 export default {
   name: 'Video',
@@ -218,13 +221,23 @@ export default {
         show_cover: '',
         category: ''
       },
+      category: [], // 分类列表
       total: 0,
       deleteIds: []// 要删除的数据id
     }
   },
+  computed: {
+    categoryStatus() {
+      return data => {
+        const status = data.status === 1 ? ' (已禁用)' : ''
+        return data.name + status
+      }
+    }
+  },
   async created() {
     console.log(this.$route.query.id)
-    await this.getVideoData()
+    await this.getVideoData() // 获取分页数据
+    await this.getCategoryList() // 获取分类列表
   },
   methods: {
     formateDate,
@@ -236,6 +249,16 @@ export default {
       const res = await getVideos(this.form)
       this.total = res.data.total
       this.tableData = res.data.data
+    },
+    async getCategoryList() {
+      const res = await getList()
+      this.category = res.data.map(item => {
+        return {
+          id: item.id,
+          name: item.name,
+          status: item.status
+        }
+      })
     },
     /**
      * 多选框选中的数据

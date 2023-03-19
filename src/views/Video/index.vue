@@ -152,6 +152,13 @@
         />
         <el-table-column
           align="center"
+          label="评论数"
+          prop="comment_count"
+          show-overflow-tooltip
+          width="100"
+        />
+        <el-table-column
+          align="center"
           label="状态"
           show-overflow-tooltip
           width="100"

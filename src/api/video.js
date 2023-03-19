@@ -20,8 +20,35 @@ export function getVideos(data) {
  */
 export function deleteVideo(data) {
   return request({
-    url: '/admin/video/page',
+    url: '/admin/video/delete',
     method: 'post',
     data
   })
 }
+
+/**
+ * 新增一个视频
+ * @param data
+ * @returns {*}
+ */
+export function addVideo(data) {
+  return request(({
+    url: '/admin/video/add',
+    method: 'post',
+    data
+  }))
+}
+
+/**
+ * 更新一个视频信息
+ * @param data
+ * @returns {*}
+ */
+export function updateVideo(data) {
+  return request(({
+    url: '/admin/video/update',
+    method: 'post',
+    data
+  }))
+}
+

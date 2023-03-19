@@ -42,6 +42,7 @@
         <el-form-item>
           <el-button icon="el-icon-search" type="primary" @click="onHandleSearchChange">查询</el-button>
           <el-button icon="el-icon-refresh" @click="onHandleReset">重置</el-button>
+          <el-button icon="el-icon-delete" type="danger" @click="onHandleDelete">删除</el-button>
           <el-button icon="el-icon-plus" type="success" @click="onHandleAdd">新增视频</el-button>
         </el-form-item>
       </el-form>
@@ -198,15 +199,14 @@
         @current-change="onHandleCurrentChange"
       />
     </div>
-
-    <Upate :is-edit="isEdit" :form-data="newForm" :show-dialog="showDialog" @editSuccess="onHandleCloseDialog" />
+    <Upate :form-data="newForm" :is-edit="isEdit" :show-dialog="showDialog" @editSuccess="onHandleCloseDialog" />
   </div>
 </template>
 
 <script>
 // 视频列表页
 
-import { getVideos } from '@/api/video'
+import { deleteVideo, getVideos } from '@/api/video'
 import { formateDate } from '@/utils/formate'
 import { getList } from '@/api/studyCategory'
 import Upate from '@/views/Video/Upate'
@@ -333,12 +333,39 @@ export default {
     /**
      * 修改或新增成功的回调
      */
-    onHandleCloseDialog() {
+    async onHandleCloseDialog() {
       this.showDialog = false // 关闭弹窗
 
       // 初始化数据
       this.newForm = {}
       this.isEdit = false
+
+      // 重新获取数据
+      await this.getVideoData()
+    },
+    /**
+     * 批量删除视频
+     */
+    onHandleDelete() {
+      this.$confirm('此操作将删除选中视频, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async() => {
+        const ids = this.deleteIds.join()
+        const res = await deleteVideo({ id: ids })
+        this.$message({
+          type: 'success',
+          message: res.msg
+        })
+        // 重新获取视频列表
+        await this.getVideoData()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
   }
 }

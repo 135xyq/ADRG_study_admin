@@ -69,6 +69,7 @@
 <script>
 // 更新或新增视频
 
+import { updateVideo, addVideo } from '@/api/video'
 import UploadVideo from '@/components/UploadVideo'
 import pictureConfig from '@/config/picture'
 import { getList } from '@/api/studyCategory'
@@ -170,15 +171,23 @@ export default {
     /**
      * 提交表单
      */
-    onHandleConfrimSubmit() {
+    async onHandleConfrimSubmit() {
       this.loading = true
 
       // 编辑
       if (this.isEdit) {
-        console.log('edit', this.form)
+        const res = await updateVideo(this.form)
+        this.$message({
+          message: res.msg,
+          type: 'success'
+        })
       } else {
         //   新增
-        console.log('add', this.form)
+        const res = await addVideo(this.form)
+        this.$message({
+          message: res.msg,
+          type: 'success'
+        })
       }
 
       this.loading = false

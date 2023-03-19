@@ -71,7 +71,7 @@ export default {
      */
     beforeUploadVideo(file) {
       const fileSize = file.size / 1024 / 1024
-      console.log(file)
+      // console.log(file)
       // 判断上传文件格式是否合法
       if (videoConfig.fileType.indexOf(file.type) === -1) {
         this.$message({

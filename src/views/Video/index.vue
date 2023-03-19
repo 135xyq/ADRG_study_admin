@@ -42,7 +42,7 @@
         <el-form-item>
           <el-button icon="el-icon-search" type="primary" @click="onHandleSearchChange">查询</el-button>
           <el-button icon="el-icon-refresh" @click="onHandleReset">重置</el-button>
-          <el-button icon="el-icon-delete" type="danger" @click="onHandleDelete">删除</el-button>
+          <el-button icon="el-icon-delete" type="danger" :disabled="deleteIds.length === 0" @click="onHandleDelete">删除</el-button>
           <el-button icon="el-icon-plus" type="success" @click="onHandleAdd">新增视频</el-button>
         </el-form-item>
       </el-form>
@@ -84,6 +84,7 @@
           label="视频地址"
           prop="url"
           show-overflow-tooltip
+          align="center"
           width="200"
         />
         <el-table-column

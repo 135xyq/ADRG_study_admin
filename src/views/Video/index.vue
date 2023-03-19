@@ -40,6 +40,26 @@
           </el-select>
         </el-form-item>
         <el-form-item>
+          <el-select v-model="form.order" clearable placeholder="排序方式" @change="onHandleSearchChange">
+            <el-option
+              label="观看数优先"
+              value="view_count"
+            />
+            <el-option
+              label="点赞数优先"
+              value="like_count"
+            />
+            <el-option
+              label="收藏数优先"
+              value="start_count"
+            />
+            <el-option
+              label="评论数优先"
+              value="comment_count"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item>
           <el-button icon="el-icon-search" type="primary" @click="onHandleSearchChange">查询</el-button>
           <el-button icon="el-icon-refresh" @click="onHandleReset">重置</el-button>
           <el-button icon="el-icon-delete" type="danger" :disabled="deleteIds.length === 0" @click="onHandleDelete">删除</el-button>
@@ -47,7 +67,6 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="search-container" />
     <div class="table-container">
       <el-table
         ref="multipleTable"
@@ -226,7 +245,8 @@ export default {
         title: '',
         status: '',
         show_cover: '',
-        category: ''
+        category: '',
+        order: ''
       },
       category: [], // 分类列表
       total: 0,
@@ -310,7 +330,8 @@ export default {
         title: '',
         status: '',
         show_cover: '',
-        category: ''
+        category: '',
+        order: ''
       }
       await this.getVideoData()
     },

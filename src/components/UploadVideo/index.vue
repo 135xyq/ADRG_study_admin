@@ -11,8 +11,8 @@
       <video
         v-if="videoForm.url !=='' && !videoFlag"
         ref="video"
-        width="320"
-        height="240"
+        width="240"
+        height="180"
         :src="videoForm.url"
         class="avatar video-avatar"
         controls="controls"

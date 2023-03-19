@@ -198,6 +198,8 @@
         @current-change="onHandleCurrentChange"
       />
     </div>
+
+    <Upate :is-edit="isEdit" :form-data="newForm" :show-dialog="showDialog" @editSuccess="onHandleCloseDialog" />
   </div>
 </template>
 
@@ -207,9 +209,13 @@
 import { getVideos } from '@/api/video'
 import { formateDate } from '@/utils/formate'
 import { getList } from '@/api/studyCategory'
+import Upate from '@/views/Video/Upate'
 
 export default {
   name: 'Video',
+  components: {
+    Upate
+  },
   data() {
     return {
       tableData: [], // 表格数据
@@ -223,6 +229,9 @@ export default {
       },
       category: [], // 分类列表
       total: 0,
+      isEdit: false, // 是否是编辑
+      newForm: {}, // 修改或新增的数据
+      showDialog: false, // 是否展示弹窗
       deleteIds: []// 要删除的数据id
     }
   },
@@ -304,11 +313,32 @@ export default {
       }
       await this.getVideoData()
     },
+    /**
+     * 新增视频
+     */
     onHandleAdd() {
-      console.log('add')
+      this.newForm = {}
+      this.isEdit = false
+      this.showDialog = true
     },
-    onHandleEdit(id) {
-      console.log('edit', id)
+    /**
+     * 修改视频
+     * @param data
+     */
+    onHandleEdit(data) {
+      this.newForm = { ...data }
+      this.isEdit = true
+      this.showDialog = true
+    },
+    /**
+     * 修改或新增成功的回调
+     */
+    onHandleCloseDialog() {
+      this.showDialog = false // 关闭弹窗
+
+      // 初始化数据
+      this.newForm = {}
+      this.isEdit = false
     }
   }
 }

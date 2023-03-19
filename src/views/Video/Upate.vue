@@ -15,7 +15,11 @@
           <el-input v-model="form.description" :rows="5" autocomplete="off" placeholder="视频描述" type="textarea" />
         </el-form-item>
         <el-form-item label="视频" label-width="120px">
-          <UploadVideo :video-data="videoData" @uploadSuccess="ooHandelVideoUplaodSuccess" />
+          <UploadVideo
+            :video-data="videoData"
+            @beforUpload="onHandleBeforeUpload"
+            @uploadSuccess="ooHandelVideoUplaodSuccess"
+          />
         </el-form-item>
         <el-form-item label="封面" label-width="120px">
           <el-upload
@@ -69,7 +73,7 @@
 <script>
 // 更新或新增视频
 
-import { updateVideo, addVideo } from '@/api/video'
+import { addVideo, updateVideo } from '@/api/video'
 import UploadVideo from '@/components/UploadVideo'
 import pictureConfig from '@/config/picture'
 import { getList } from '@/api/studyCategory'
@@ -95,8 +99,20 @@ export default {
   data() {
     return {
       category: [], // 分类
-      form: {},
+      form: {
+        title: '',
+        description: '',
+        url: '',
+        thumbnail_url: '',
+        status: 1,
+        show_cover: 0,
+        file_size: 0,
+        duration: 0,
+        study_category_id: ''
+      },
       loading: false, // 提交加载
+      videoIsUploading: false, // 视频是否在上传
+      imgIsUploading: false, // 图片是否在上传
       videoData: {
         url: this.formData.url || '',
         duration: this.formData.duration || 0,
@@ -126,7 +142,17 @@ export default {
      */
     initData() {
       this.videoData = {}
-      this.form = {}
+      this.form = {
+        title: '',
+        description: '',
+        url: '',
+        thumbnail_url: '',
+        status: 1,
+        show_cover: 0,
+        file_size: 0,
+        duration: 0,
+        study_category_id: ''
+      }
       this.loading = false
     },
     /**
@@ -136,6 +162,13 @@ export default {
     async getCategory() {
       const res = await getList()
       this.category = res.data
+    },
+    /**
+     * 视频上传之前的处理函数，用来标识文件是否上传成功
+     */
+    onHandleBeforeUpload() {
+      // 文件正在上传
+      this.vedioIsUploading = true
     },
     /**
      * 图片上传之前进行验证
@@ -150,7 +183,10 @@ export default {
       }
       if (pictureConfig.size < fileSize) {
         this.$message.error(`上传头像图片大小不能超过 ${pictureConfig.size}MB!`)
+        return
       }
+      // 图片正在上传，无法提交
+      this.imgIsUploading = true
     },
     /**
      * 视频上传成功
@@ -160,6 +196,9 @@ export default {
       this.form.url = data.url
       this.form.duration = data.duration
       this.form.file_size = data.fileSize
+
+      // 视频上传结束
+      this.videoIsUploading = false
     },
     /**
      * 图片上传成功的
@@ -167,11 +206,59 @@ export default {
      */
     successAvatarUpload(data) {
       this.form.thumbnail_url = data.data.url
+
+      // 图片上传结束
+      this.imgIsUploading = false
     },
     /**
      * 提交表单
      */
     async onHandleConfrimSubmit() {
+      // 数据验证
+      if (this.form.title.trim() === '') {
+        this.$message({
+          message: '标题不能为空！',
+          type: 'warning'
+        })
+        return
+      }
+      if (this.form.url === '') {
+        this.$message({
+          message: '请上传视频！',
+          type: 'warning'
+        })
+        return
+      }
+      if (this.form.thumbnail_url === '') {
+        this.$message({
+          message: '请上传封面！',
+          type: 'warning'
+        })
+        return
+      }
+      if (this.form.study_category_id === '') {
+        this.$message({
+          message: '请选择分类',
+          type: 'warning'
+        })
+        return
+      }
+      if (this.imgIsUploading) {
+        this.$message({
+          message: '图片正在上传！',
+          type: 'warning'
+        })
+        return
+      }
+      if (this.videoIsUploading) {
+        this.$message({
+          message: '视频正在上传！',
+          type: 'warning'
+        })
+        return
+      }
+
+      // 验证通过
       this.loading = true
 
       // 编辑

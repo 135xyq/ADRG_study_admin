@@ -88,6 +88,8 @@ export default {
         })
         return false
       }
+      // 文件准备上传，父组件要做一些事情
+      this.$emit('beforUpload')
     },
     /**
      *  控制进度条

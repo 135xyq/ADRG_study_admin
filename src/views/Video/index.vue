@@ -311,7 +311,7 @@ export default {
      */
     async onHandleSizeChange(limit) {
       this.form.limit = limit
-      await this.getData()
+      await this.getVideoData()
     },
     /**
      * 修改当前页码数
@@ -319,7 +319,7 @@ export default {
      */
     async onHandleCurrentChange(page) {
       this.form.page = page
-      await this.getData()
+      await this.getVideoData()
     },
     /**
      * 筛选信息改变重新获取数据

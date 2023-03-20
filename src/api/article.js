@@ -52,3 +52,18 @@ export function updateArticle(data) {
   }))
 }
 
+/**
+ * 获取文章详情
+ * @param id 文章id
+ * @returns {*}
+ */
+export function articleDetail(id) {
+  return request(({
+    url: '/admin/article/detail',
+    method: 'post',
+    data: {
+      id
+    }
+  }))
+}
+

@@ -75,8 +75,22 @@ export const constantRoutes = [
       {
         path: 'article',
         name: 'Article',
+        redirect: 'article/list',
         component: () => import('@/views/Article'),
-        meta: { title: '文章', icon: 'el-icon-document' }
+        meta: { title: '文章', icon: 'el-icon-document' },
+        children: [
+          {
+            path: 'list',
+            name: 'ArticleList',
+            component: () => import('@/views/Article/List'),
+            meta: { title: '文章列表', icon: 'table' }
+          }, {
+            path: 'edit',
+            name: 'ArticleEdit',
+            component: () => import('@/views/Article/Edit'),
+            meta: { title: '文章编辑', icon: 'el-icon-edit' }
+          }
+        ]
       }
     ]
   },

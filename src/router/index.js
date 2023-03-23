@@ -78,7 +78,7 @@ export const constantRoutes = [
             component: () => import('@/views/Video/List'),
             meta: { title: '视频列表', icon: 'table' }
           }, {
-            path: 'detail/:id',
+            path: 'detail',
             name: 'VideoDetail',
             component: () => import('@/views/Video/Detail'),
             meta: { title: '视频详情', icon: 'el-icon-s-platform' }
@@ -102,7 +102,7 @@ export const constantRoutes = [
             component: () => import('@/views/Article/Edit'),
             meta: { title: '文章编辑', icon: 'el-icon-edit' }
           }, {
-            path: 'detail/:id',
+            path: 'detail',
             name: 'ArticleDetail',
             component: () => import('@/views/Article/Detail'),
             meta: { title: '文章详情', icon: 'el-icon-reading' }

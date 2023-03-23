@@ -2,7 +2,7 @@
   <div class="comment-container">
     <div class="search-container">
       <el-form :inline="true" :model="searchForm" class="demo-form-inline" size="mini">
-        <el-form-item label="审批人">
+        <el-form-item label="关键词">
           <el-input v-model="searchForm.keyword" placeholder="内容关键词" />
         </el-form-item>
         <el-form-item label="状态">
@@ -50,7 +50,21 @@
         <el-table-column
           align="center"
           label="所属视频/文章"
-          prop="article_id"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <el-link v-if="scope.row.video_id" @click="onHandleGoToSource('video',scope.row.video_id)">
+              {{ scope.row.video.title }}
+            </el-link>
+            <el-link v-if="scope.row.article_id" @click="onHandleGoToSource('article',scope.row.article_id)">
+              {{ scope.row.article.title }}
+            </el-link>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="评论用户"
+          prop="user.nick_name"
           show-overflow-tooltip
         />
         <el-table-column
@@ -96,7 +110,11 @@
           label="操作"
         >
           <template slot-scope="scope">
-            <el-button size="mini" type="primary" @click="onHandleAuditComment">{{
+            <el-button
+              :type="scope.row.status === 0 ? 'primary' : 'warning'"
+              size="mini"
+              @click="onHandleAuditComment(scope.row)"
+            >{{
               scope.row.status === 0 ? '审核' : '复核'
             }}
             </el-button>
@@ -115,13 +133,30 @@
         @current-change="onHandleCurrentChange"
       />
     </div>
+    <div class="audit-container">
+      <el-dialog :visible.sync="dialogFormVisible" title="评论审核">
+        <el-form :model="audtForm">
+          <el-form-item label="活动区域" label-width="120px">
+            <el-radio v-model="audtForm.status" :label="1">审核通过</el-radio>
+            <el-radio v-model="audtForm.status" :label="2">审核不通过</el-radio>
+          </el-form-item>
+          <el-form-item label="备注信息" label-width="120px">
+            <el-input v-model="audtForm.err_msg" autocomplete="off" type="textarea" />
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="onHandleCloseDialog">取 消</el-button>
+          <el-button type="primary" @click="onHandleConfirmDialog">确 定</el-button>
+        </div>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
 <script>
 // 评论列表
 
-import { getCommentPage, deleteComment } from '@/api/comment'
+import { deleteComment, getCommentPage, auditComment } from '@/api/comment'
 
 export default {
   name: 'Comment',
@@ -138,7 +173,13 @@ export default {
       }, // 查找数据
       total: 0, // 数据总量
       deleteIds: [], // 要删除评论的列表
-      loading: false // 数据加载中
+      loading: false, // 数据加载中
+      dialogFormVisible: false,
+      audtForm: {
+        id: '',
+        status: '',
+        err_msg: ''
+      } // 审核数据
     }
   },
   computed: {
@@ -182,8 +223,15 @@ export default {
     onHandleSelectionChange(val) {
       this.deleteIds = val.map(item => item.id)
     },
-    onHandleAuditComment(id) {
-      console.log('audit', id)
+    /**
+     * 打开审核弹窗
+     * @param data
+     */
+    onHandleAuditComment(data) {
+      this.dialogFormVisible = true
+      this.audtForm.id = data.id
+      this.audtForm.status = data.status
+      this.audtForm.err_msg = data.err_msg
     },
     /**
      * 修改每页显示数量
@@ -243,6 +291,42 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    /**
+     * 跳转到文章或视频页
+     * @param type
+     * @param id
+     */
+    onHandleGoToSource(type, id) {
+      if (type === 'article') {
+        this.$router.push({ name: 'ArticleDetail', params: { id: id }})
+      }
+      if (type === 'video') {
+        this.$router.push({ name: 'VideoDetail', params: { id: id }})
+      }
+    },
+    /**
+     * 取消审核
+     */
+    onHandleCloseDialog() {
+      this.audtForm = {
+        id: '',
+        status: '',
+        err_msg: ''
+      }
+      this.dialogFormVisible = false
+    },
+    /**
+     * 确认修改
+     */
+    async onHandleConfirmDialog() {
+      const res = await auditComment(this.audtForm)
+      this.$message({
+        message: res.msg,
+        type: 'success'
+      })
+      this.onHandleCloseDialog()
+      await this.getCommentData()
     }
   }
 }

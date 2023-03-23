@@ -11,11 +11,11 @@
       <video
         v-if="videoForm.url !=='' && !videoFlag"
         ref="video"
-        width="240"
-        height="180"
         :src="videoForm.url"
         class="avatar video-avatar"
         controls="controls"
+        height="180"
+        width="240"
       >
         您的浏览器不支持视频播放
       </video>
@@ -61,6 +61,19 @@ export default {
         duration: this.videoData.duration,
         fileSize: this.videoData.fileSize
       }
+    }
+  },
+  watch: {
+    // 获取视频的详细信息
+    videoData: {
+      handler(newVal, oldVal) {
+        this.videoForm = {
+          url: newVal.url,
+          duration: newVal.duration,
+          fileSize: newVal.fileSize
+        }
+      },
+      deep: true
     }
   },
   methods: {

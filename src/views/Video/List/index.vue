@@ -206,10 +206,12 @@
           align="center"
           fixed="right"
           label="操作"
-          width="150"
+          width="200"
         >
           <template slot-scope="scope">
             <el-button icon="el-icon-edit" size="mini" type="primary" @click="onHandleEdit(scope.row)">编辑
+            </el-button>
+            <el-button icon="el-icon-view" size="mini" type="info" @click="onHandleShowDetail(scope.row.id)">详情
             </el-button>
           </template>
         </el-table-column>
@@ -398,6 +400,13 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    /**
+     * 跳转到详情页
+     * @param id
+     */
+    onHandleShowDetail(id) {
+      this.$router.push({ name: 'VideoDetail', params: { id: id }})
     }
   }
 }

@@ -43,7 +43,7 @@ export default {
       const res = await articleDetail({ id: this.articleId })
       this.article = res.data
 
-      // console.log(this.article)
+      console.log(this.article)
     },
     // 将markdown转为html
     mdToHtml() {

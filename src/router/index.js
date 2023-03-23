@@ -35,7 +35,6 @@ export const constantRoutes = [
     component: () => import('@/views/Login/index'),
     hidden: true
   },
-
   {
     path: '/404',
     component: () => import('@/views/404'),
@@ -69,8 +68,21 @@ export const constantRoutes = [
       {
         path: 'video',
         name: 'Video',
+        redirect: 'video/list',
         component: () => import('@/views/Video'),
-        meta: { title: '视频', icon: 'el-icon-video-camera' }
+        meta: { title: '视频', icon: 'el-icon-video-camera' },
+        children: [
+          {
+            path: 'list',
+            name: 'VideoList',
+            component: () => import('@/views/Video/List'),
+            meta: { title: '视频列表', icon: 'table' }
+          }, {
+            path: 'detail/:id',
+            name: 'VideoDetail',
+            component: () => import('@/views/Video/Detail'),
+            meta: { title: '视频详情', icon: 'el-icon-s-platform' }
+          }]
       },
       {
         path: 'article',
@@ -89,8 +101,26 @@ export const constantRoutes = [
             name: 'ArticleEdit',
             component: () => import('@/views/Article/Edit'),
             meta: { title: '文章编辑', icon: 'el-icon-edit' }
+          }, {
+            path: 'detail/:id',
+            name: 'ArticleDetail',
+            component: () => import('@/views/Article/Detail'),
+            meta: { title: '文章详情', icon: 'el-icon-reading' }
           }
         ]
+      }
+    ]
+  },
+  {
+    path: '/comment',
+    name: 'Comment',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'CommentList',
+        component: () => import('@/views/Comment/index'),
+        meta: { title: '用户评论', icon: 'el-icon-s-comment' }
       }
     ]
   },
@@ -111,19 +141,6 @@ export const constantRoutes = [
         name: 'Log',
         component: () => import('@/views/Set/Log'),
         meta: { title: '操作日志', icon: 'el-icon-date' }
-      }
-    ]
-  },
-  {
-    path: '/comment',
-    name: 'Comment',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'CommentList',
-        component: () => import('@/views/Comment/index'),
-        meta: { title: '用户评论', icon: 'el-icon-s-comment' }
       }
     ]
   },

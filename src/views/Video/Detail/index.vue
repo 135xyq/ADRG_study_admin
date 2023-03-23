@@ -1,12 +1,12 @@
 <template>
-  <div class="article-continer">
-    <router-view />
+  <div class="video-detail-container">
+    video-detail
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Index'
+  name: 'Detail'
 }
 </script>
 

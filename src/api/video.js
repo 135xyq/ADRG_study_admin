@@ -51,4 +51,15 @@ export function updateVideo(data) {
     data
   }))
 }
-
+/**
+ * 视频详情
+ * @param data
+ * @returns {*}
+ */
+export function videoDetail(data) {
+  return request(({
+    url: '/admin/video/detail',
+    method: 'post',
+    data
+  }))
+}

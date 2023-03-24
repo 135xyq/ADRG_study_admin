@@ -100,7 +100,7 @@ export default {
   },
   methods: {
     /**
-     * 获取评论列表
+     * 获取点赞列表
      * @returns {Promise<void>}
      */
     async getLiketData() {
@@ -139,7 +139,7 @@ export default {
      * 批量删除点赞信息
      */
     onHandleDelete() {
-      this.$confirm('此操作将删除选中点赞信息论, 是否继续?', '提示', {
+      this.$confirm('此操作将删除选中的点赞信息, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

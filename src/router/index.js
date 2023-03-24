@@ -125,6 +125,19 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/appletuser',
+    name: 'AppletUser',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'AppletUserIndex',
+        component: () => import('@/views/AppletUser/index'),
+        meta: { title: '用户管理', icon: 'el-icon-s-custom' }
+      }
+    ]
+  },
+  {
     path: '/set',
     component: Layout,
     redirect: '/set/appletconfig',

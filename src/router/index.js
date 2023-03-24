@@ -138,6 +138,19 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/star',
+    name: 'Star',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'StarList',
+        component: () => import('@/views/Star/index'),
+        meta: { title: '收藏信息', icon: 'el-icon-star-on' }
+      }
+    ]
+  },
+  {
     path: '/appletuser',
     name: 'AppletUser',
     component: Layout,

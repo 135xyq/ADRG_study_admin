@@ -73,6 +73,7 @@
         :data="tableData"
         border
         style="width: 100%"
+        :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
         tooltip-effect="dark"
         @selection-change="onHandleSelectionChange"
       >

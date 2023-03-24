@@ -51,7 +51,7 @@
             />
             <el-option
               label="收藏数优先"
-              value="start_count"
+              value="star_count"
             />
             <el-option
               label="评论数优先"
@@ -131,7 +131,7 @@
         <el-table-column
           align="center"
           label="收藏数"
-          prop="start_count"
+          prop="star_count"
           show-overflow-tooltip
           width="100"
         />

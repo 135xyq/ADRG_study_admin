@@ -125,6 +125,19 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/like',
+    name: 'Like',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'LikeList',
+        component: () => import('@/views/Like/index'),
+        meta: { title: '点赞信息', icon: 'el-icon-thumb' }
+      }
+    ]
+  },
+  {
     path: '/appletuser',
     name: 'AppletUser',
     component: Layout,

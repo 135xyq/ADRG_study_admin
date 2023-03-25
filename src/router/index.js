@@ -112,6 +112,33 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/question',
+    component: Layout,
+    redirect: '/qusetion/category',
+    name: 'StudySource',
+    meta: { title: '题库', icon: 'form' },
+    children: [
+      {
+        path: 'category',
+        name: 'QuestionCategory',
+        component: () => import('@/views/QuestionCategory/Category'),
+        meta: { title: '题目分类', icon: 'table' }
+      },
+      {
+        path: 'list',
+        name: 'QuestionList',
+        component: () => import('@/views/Question'),
+        meta: { title: '题目列表', icon: 'el-icon-notebook-2' }
+      },
+      {
+        path: 'reslove',
+        name: 'QuestionReslove',
+        component: () => import('@/views/QuestionReslove'),
+        meta: { title: '刷题记录', icon: 'el-icon-s-release' }
+      }
+    ]
+  },
+  {
     path: '/comment',
     name: 'Comment',
     component: Layout,

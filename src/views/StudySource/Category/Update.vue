@@ -1,6 +1,6 @@
 <template>
   <div class="update-container">
-    <el-dialog :title="isEdit?'编辑':'新增'" :visible.sync="isShowDialog" width="40%">
+    <el-dialog :title="isEdit?'编辑':'新增'" :visible.sync="dialogFormVisible" width="40%" @close="onHandleCancel">
       <el-form :model="form">
         <el-form-item label="分类名称" label-width="120px">
           <el-input v-model="form.name" autocomplete="off" />
@@ -9,7 +9,7 @@
           <el-input v-model="form.description" autocomplete="off" type="textarea" />
         </el-form-item>
         <el-form-item label="排序" label-width="120px">
-          <el-input-number v-model="form.sort" :min="1" :max="100" label="排序" />
+          <el-input-number v-model="form.sort" :max="100" :min="1" label="排序" />
         </el-form-item>
         <el-form-item label="状态" label-width="120px">
           <el-switch
@@ -48,7 +48,13 @@ export default {
   },
   data() {
     return {
+      dialogFormVisible: this.isShowDialog,
       loading: false // 提交时加载中
+    }
+  },
+  watch: {
+    isShowDialog: function(val) {
+      this.dialogFormVisible = val
     }
   },
   methods: {
@@ -63,7 +69,7 @@ export default {
      * @returns {Promise<void>}
      */
     async onHandleConfirm() {
-      this.loading = true
+      // this.loading = true
       // 修改信息
       if (this.isEdit) {
         const res = await update(this.form)
@@ -80,7 +86,7 @@ export default {
         })
       }
 
-      this.loading = false
+      // this.loading = false
       // 结束回调，关闭弹框
       this.$emit('endUpdate')
     }

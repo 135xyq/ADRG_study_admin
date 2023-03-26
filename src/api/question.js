@@ -5,7 +5,7 @@ import request from '@/utils/request'
  * @param data {Object}
  * @returns {*}
  */
-export function page(data) {
+export function getQuestion(data) {
   return request({
     url: '/admin/question/page',
     method: 'post',

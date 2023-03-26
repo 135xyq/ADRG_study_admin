@@ -127,7 +127,7 @@ export const constantRoutes = [
       {
         path: 'list',
         name: 'QuestionList',
-        component: () => import('@/views/Question'),
+        component: () => import('@/views/Question/List'),
         meta: { title: '题目列表', icon: 'el-icon-notebook-2' }
       },
       {

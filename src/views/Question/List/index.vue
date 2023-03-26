@@ -30,7 +30,7 @@
             <el-option
               v-for="item in category"
               :key="item.id"
-              :label="categoryStatus(item)"
+              :label="getStatus(item)"
               :value="item.id"
             />
           </el-select>
@@ -193,7 +193,7 @@
           <template slot-scope="scope">
             <el-button icon="el-icon-edit" size="mini" type="primary" @click="onHandleEdit(scope.row)">编辑
             </el-button>
-            <el-button icon="el-icon-view" size="mini" type="info" @click="onHandleShowDetail(scope.row.id)">详情
+            <el-button icon="el-icon-view" size="mini" type="info" @click="onHandleShowDetail(scope.row)">详情
             </el-button>
           </template>
         </el-table-column>
@@ -210,6 +210,7 @@
         @current-change="onHandleCurrentChange"
       />
     </div>
+    <Detail :form-data="detailData" :dialog-show="showDetailDialog" @closeDetail="onHandleCloseDetail" />
   </div>
 </template>
 
@@ -220,9 +221,13 @@ import { deleteQuestion, getQuestion } from '@/api/question'
 import { formateDate } from '@/utils/formate'
 import { getList } from '@/api/questionCategory'
 import { level, parse, sort, status, type } from '@/config/question'
+import Detail from '@/views/Question/Detail'
 
 export default {
-  name: 'Video',
+  name: 'Question',
+  components: {
+    Detail
+  },
   data() {
     return {
       type,
@@ -246,12 +251,14 @@ export default {
       total: 0,
       isEdit: false, // 是否是编辑
       newForm: {}, // 修改或新增的数据
-      showDialog: false, // 是否展示弹窗
-      deleteIds: []// 要删除的数据id
+      showEditDialog: false, // 是否展示修改和新增弹窗
+      deleteIds: [], // 要删除的数据id
+      showDetailDialog: false, // 是否展示详情弹窗
+      detailData: {} // 详情数据
     }
   },
   computed: {
-    categoryStatus() {
+    getStatus() {
       return data => {
         const status = data.status === 1 ? ' (已禁用)' : ''
         return data.title + status
@@ -291,6 +298,10 @@ export default {
       this.total = res.data.total
       this.tableData = res.data.data
     },
+    /**
+     * 获取分类列表
+     * @returns {Promise<void>}
+     */
     async getCategoryList() {
       const res = await getList()
       this.category = res.data.map(item => {
@@ -347,27 +358,27 @@ export default {
       await this.getQuestionData()
     },
     /**
-     * 新增视频
+     * 新增题目
      */
     onHandleAdd() {
       this.newForm = {}
       this.isEdit = false
-      this.showDialog = true
+      this.showEditDialog = true
     },
     /**
-     * 修改视频
+     * 修改题目
      * @param data
      */
     onHandleEdit(data) {
       this.newForm = { ...data }
       this.isEdit = true
-      this.showDialog = true
+      this.showEditDialog = true
     },
     /**
      * 修改或新增成功的回调
      */
     async onHandleCloseDialog() {
-      this.showDialog = false // 关闭弹窗
+      this.showEditDialog = false // 关闭弹窗
 
       // 初始化数据
       this.newForm = {}
@@ -377,10 +388,10 @@ export default {
       await this.getQuestionData()
     },
     /**
-     * 批量删除视频
+     * 批量删除题目
      */
     onHandleDelete() {
-      this.$confirm('此操作将删除选中视频, 是否继续?', '提示', {
+      this.$confirm('此操作将删除选中题目, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -391,7 +402,7 @@ export default {
           type: 'success',
           message: res.msg
         })
-        // 重新获取视频列表
+        // 重新获取问题列表
         await this.getQuestionData()
       }).catch(() => {
         this.$message({
@@ -409,10 +420,17 @@ export default {
     },
     /**
      * 展示详情页
-     * @param id
+     * @param data
      */
-    onHandleShowDetail(id) {
-      this.$router.push({ name: 'VideoDetail', params: { id: id }})
+    onHandleShowDetail(data) {
+      this.showDetailDialog = true
+      this.detailData = { ...data }
+    },
+    /**
+     * 关闭详情页展示
+     */
+    onHandleCloseDetail() {
+      this.showDetailDialog = false
     }
   }
 }

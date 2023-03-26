@@ -211,6 +211,7 @@
       />
     </div>
     <Detail :form-data="detailData" :dialog-show="showDetailDialog" @closeDetail="onHandleCloseDetail" />
+    <Edit :form-data="newForm" :is-edit="isEdit" :show-dialog="showEditDialog" @closeEditDialog="onHandleCloseDialog" />
   </div>
 </template>
 
@@ -222,11 +223,13 @@ import { formateDate } from '@/utils/formate'
 import { getList } from '@/api/questionCategory'
 import { level, parse, sort, status, type } from '@/config/question'
 import Detail from '@/views/Question/Detail'
+import Edit from '@/views/Question/Edit'
 
 export default {
   name: 'Question',
   components: {
-    Detail
+    Detail,
+    Edit
   },
   data() {
     return {

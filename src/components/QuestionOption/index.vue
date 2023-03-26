@@ -4,7 +4,7 @@
     <div class="top">
       <el-row>
         <el-col :span="15">
-          <el-input v-model="newOption" type="textarea" placeholder="请输入新选项" />
+          <el-input v-model="newOption" placeholder="请输入新选项" type="textarea" />
         </el-col>
         <el-col :span="7" style="margin-left: 20px">
           <el-button type="primary" @click="addOption">添加选项</el-button>
@@ -48,6 +48,17 @@ export default {
       options: []
     }
   },
+  watch: {
+    form: {
+      handler(val) {
+        console.log(val)
+        if (val) {
+          this.options = val
+        }
+      },
+      deep: true
+    }
+  },
   methods: {
     // 添加选项
     addOption() {
@@ -69,7 +80,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.top{
+.top {
   margin-bottom: 20px;
 }
 

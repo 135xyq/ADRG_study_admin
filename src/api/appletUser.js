@@ -12,3 +12,16 @@ export function getAppletUsers(data) {
     data
   })
 }
+
+/**
+ * 查询获取用户列表
+ * @param data
+ * @returns {*}
+ */
+export function getAppletUserList(data) {
+  return request({
+    url: '/admin/appletuser/searchuserlist',
+    method: 'post',
+    data
+  })
+}

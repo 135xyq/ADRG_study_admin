@@ -156,6 +156,7 @@
               :inactive-value="0"
               active-color="#13ce66"
               inactive-color="#ff4949"
+              @change="onHAndleUpdateLine('status',scope.row,$event)"
             />
           </template>
         </el-table-column>
@@ -172,6 +173,7 @@
               :inactive-value="0"
               active-color="#13ce66"
               inactive-color="#ff4949"
+              @change="onHAndleUpdateLine('status',scope.row,$event)"
             />
           </template>
         </el-table-column>
@@ -220,7 +222,7 @@
 <script>
 // 文章列表页
 
-import { deleteArticle, getArticles } from '@/api/article'
+import { deleteArticle, getArticles, updateArticle } from '@/api/article'
 import { formateDate } from '@/utils/formate'
 import { getList } from '@/api/studyCategory'
 
@@ -390,6 +392,22 @@ export default {
      */
     onHandleShowDetail(id) {
       this.$router.push({ name: 'ArticleDetail', params: { id: id }})
+    },
+    /**
+     * 直接修改状态或展示在封面
+     * @param type 状态还是封面
+     * @param data 整行数据
+     * @param val 新的数据
+     */
+    async onHAndleUpdateLine(type, data, val) {
+      data[type] = val
+      const res = await updateArticle(data)
+      this.$message({
+        message: res.msg,
+        type: 'success'
+      })
+
+      await this.getArticleData()
     }
   }
 }

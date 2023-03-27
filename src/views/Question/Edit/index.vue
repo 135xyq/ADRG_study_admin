@@ -1,8 +1,13 @@
 <template>
   <el-dialog :title="isEdit ? '编辑' : '新增'" :visible.sync="dialogVisible" width="50%" @close="closeDialog">
-    <el-form :model="form">
+    <el-form :model="form" size="medium">
       <el-form-item label="题目" label-width="100px">
-        <el-input v-model="form.title" autocomplete="off" />
+        <el-input v-model="form.title" autocomplete="off" type="textarea" placeholder="题目" />
+      </el-form-item>
+      <el-form-item label="类型" label-width="100px">
+        <el-select v-model="form.type" placeholder="题目类型">
+          <el-option v-for="item in type" :key="item.key" :label="item.key" :value="item.value" />
+        </el-select>
       </el-form-item>
       <el-form-item v-if="form.type === 0 || form.type === 1" label="选项" label-width="100px">
         <div class="container">
@@ -49,22 +54,17 @@
         </el-checkbox-group>
       </el-form-item>
       <el-form-item v-else label="答案" label-width="100px">
-        <el-input v-model="otherAnswer" autocomplete="off" type="textarea" />
+        <el-input v-model="otherAnswer" autocomplete="off" type="textarea" placeholder="答案" />
       </el-form-item>
       <el-form-item label="解析" label-width="100px">
-        <el-input v-model="form.parse" autocomplete="off" type="textarea" />
+        <el-input v-model="form.parse" autocomplete="off" type="textarea" placeholder="题目解析" />
       </el-form-item>
       <el-form-item label="分类" label-width="100px">
         <el-select v-model="form.question_category_id" placeholder="题目分类">
           <el-option v-for="item in category" :key="item.id" :label="item.title" :value="item.id" />
         </el-select>
       </el-form-item>
-      <el-form-item label="类型" label-width="100px">
-        <el-select v-model="form.type" placeholder="题目类型">
-          <el-option v-for="item in type" :key="item.key" :label="item.key" :value="item.value" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="等级" label-width="100px">
+      <el-form-item label="难度" label-width="100px">
         <el-select v-model="form.level" placeholder="题目等级">
           <el-option v-for="item in level" :key="item.key" :label="item.key" :value="item.value" />
         </el-select>
@@ -104,7 +104,8 @@ export default {
       dialogVisible: this.showDialog,
       form: {
         answer: [],
-        status: 1
+        status: 1,
+        level: 0
       },
       category: [],
       newOption: '',
@@ -256,7 +257,7 @@ export default {
       // 不是选择题将答案置空
       if (formData.type !== 1 && formData.type !== 0) {
         formData.options = {}
-        formData.answer = this.otherAnswer
+        formData.answer[0] = this.otherAnswer
       } else {
         const obj = {}
         this.options.forEach((item, index) => {

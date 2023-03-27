@@ -62,7 +62,8 @@
         <el-form-item>
           <el-button icon="el-icon-search" type="primary" @click="onHandleSearchChange">查询</el-button>
           <el-button icon="el-icon-refresh" @click="onHandleReset">重置</el-button>
-          <el-button icon="el-icon-delete" type="danger" :disabled="deleteIds.length === 0" @click="onHandleDelete">删除</el-button>
+          <el-button :disabled="deleteIds.length === 0" icon="el-icon-delete" type="danger" @click="onHandleDelete">删除
+          </el-button>
           <el-button icon="el-icon-plus" type="success" @click="onHandleAdd">新增视频</el-button>
         </el-form-item>
       </el-form>
@@ -72,9 +73,9 @@
         ref="multipleTable"
         v-loading="loading"
         :data="tableData"
+        :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
         border
         style="width: 100%"
-        :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
         tooltip-effect="dark"
         @selection-change="onHandleSelectionChange"
       >
@@ -102,10 +103,10 @@
           width="300"
         />
         <el-table-column
+          align="center"
           label="视频地址"
           prop="url"
           show-overflow-tooltip
-          align="center"
           width="200"
         />
         <el-table-column
@@ -172,6 +173,7 @@
               :inactive-value="0"
               active-color="#13ce66"
               inactive-color="#ff4949"
+              @change="onHAndleUpdateLine('status',scope.row,$event)"
             />
           </template>
         </el-table-column>
@@ -188,6 +190,7 @@
               :inactive-value="0"
               active-color="#13ce66"
               inactive-color="#ff4949"
+              @change="onHAndleUpdateLine('show_cover',scope.row,$event)"
             />
           </template>
         </el-table-column>
@@ -237,7 +240,7 @@
 <script>
 // 视频列表页
 
-import { deleteVideo, getVideos } from '@/api/video'
+import { deleteVideo, getVideos, updateVideo } from '@/api/video'
 import { formateDate } from '@/utils/formate'
 import { getList } from '@/api/studyCategory'
 import Upate from '@/views/Video/Upate'
@@ -414,6 +417,22 @@ export default {
      */
     onHandleShowDetail(id) {
       this.$router.push({ name: 'VideoDetail', params: { id: id }})
+    },
+    /**
+     * 直接修改状态或展示在封面
+     * @param type 状态还是封面
+     * @param data 整行数据
+     * @param val 新的数据
+     */
+    async onHAndleUpdateLine(type, data, val) {
+      data[type] = val
+      const res = await updateVideo(data)
+      this.$message({
+        message: res.msg,
+        type: 'success'
+      })
+
+      await this.getVideoData()
     }
   }
 }

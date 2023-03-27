@@ -2,6 +2,16 @@
   <div class="comment-container">
     <div class="search-container">
       <el-form :inline="true" :model="searchForm" class="demo-form-inline" size="mini">
+        <el-form-item label="用户姓名">
+          <el-autocomplete
+            v-model="searchForm.userName"
+            :fetch-suggestions="querySearchAsync"
+            :trigger-on-focus="false"
+            class="inline-input"
+            placeholder="请输入内容"
+            @select="onHandleSearch"
+          />
+        </el-form-item>
         <el-form-item label="关键词">
           <el-input v-model="searchForm.keyword" placeholder="内容关键词" />
         </el-form-item>
@@ -158,6 +168,7 @@
 // 评论列表
 
 import { deleteComment, getCommentPage, auditComment } from '@/api/comment'
+import { getAppletUserList } from '@/api/appletUser'
 
 export default {
   name: 'Comment',
@@ -170,7 +181,8 @@ export default {
         status: '',
         keyword: '',
         article: '',
-        video: ''
+        video: '',
+        userName: ''
       }, // 查找数据
       total: 0, // 数据总量
       deleteIds: [], // 要删除评论的列表
@@ -265,7 +277,8 @@ export default {
       this.searchForm = {
         ...this.searchForm,
         keyword: '',
-        status: ''
+        status: '',
+        userName: ''
       }
       await this.getCommentData()
     },
@@ -327,6 +340,29 @@ export default {
         type: 'success'
       })
       this.onHandleCloseDialog()
+      await this.getCommentData()
+    },
+    /**
+     * 获取搜索建议
+     * @param queryString
+     * @param cb
+     * @returns {Promise<void>}
+     */
+    async querySearchAsync(queryString, cb) {
+      const res = await getAppletUserList({ name: queryString })
+      const data = res.data.map(item => {
+        return {
+          value: item.name
+        }
+      })
+
+      cb(data)
+    },
+    /**
+     * 查询
+     * @returns {Promise<void>}
+     */
+    async onHandleSearch() {
       await this.getCommentData()
     }
   }

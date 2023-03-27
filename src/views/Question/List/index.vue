@@ -169,6 +169,7 @@
               :inactive-value="0"
               active-color="#13ce66"
               inactive-color="#ff4949"
+              @change="onHandleStatusChange(scope.row,$event)"
             />
           </template>
         </el-table-column>
@@ -222,7 +223,7 @@
 <script>
 // 题目列表页
 
-import { deleteQuestion, getQuestion } from '@/api/question'
+import { deleteQuestion, getQuestion, updateQuestion } from '@/api/question'
 import { formateDate } from '@/utils/formate'
 import { getList } from '@/api/questionCategory'
 import { level, parse, sort, status, type } from '@/config/question'
@@ -443,6 +444,24 @@ export default {
      */
     onHandleCloseDetail() {
       this.showDetailDialog = false
+    },
+    /**
+     * 修改题目的状态
+     * @param data 数据
+     * @param val 修改后的值
+     * @returns {Promise<void>}
+     */
+    async onHandleStatusChange(data, val) {
+      data.status = val
+
+      const res = await updateQuestion(data)
+      this.$message({
+        message: res.msg,
+        type: 'success'
+      })
+
+      // 重新获取数据
+      await this.getQuestionData()
     }
   }
 }

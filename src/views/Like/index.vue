@@ -2,6 +2,24 @@
   <div class="like-container">
     <div class="search-container">
       <el-form :inline="true" :model="searchForm" class="demo-form-inline" size="mini">
+        <el-form-item label="用户姓名">
+          <el-autocomplete
+            v-model="searchForm.userName"
+            :fetch-suggestions="querySearchAsync"
+            :trigger-on-focus="false"
+            class="inline-input"
+            placeholder="请输入内容"
+            @select="onHandleSearch"
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button icon="el-icon-search" type="primary" @click="onHandleSearch">查询
+          </el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button icon="el-icon-refresh" @click="onHnadleReset">重置
+          </el-button>
+        </el-form-item>
         <el-form-item>
           <el-button :disabled="deleteIds.length === 0" icon="el-icon-delete" type="danger" @click="onHandleDelete">批量删除
           </el-button>
@@ -75,6 +93,7 @@
 // 点赞列表
 
 import { getLikePage, deleteLike } from '@/api/like'
+import { getAppletUserList } from '@/api/appletUser'
 
 export default {
   name: 'Like',
@@ -85,7 +104,8 @@ export default {
         page: 1,
         limit: 20,
         article: '',
-        video: ''
+        video: '',
+        userName: ''
       }, // 查找数据
       total: 0, // 数据总量
       deleteIds: [], // 要删除点赞的列表
@@ -171,6 +191,41 @@ export default {
       if (type === 'video') {
         this.$router.push({ name: 'VideoDetail', params: { id: id }})
       }
+    },
+    /**
+     * 获取搜索建议
+     * @param queryString
+     * @param cb
+     * @returns {Promise<void>}
+     */
+    async querySearchAsync(queryString, cb) {
+      const res = await getAppletUserList({ name: queryString })
+      const data = res.data.map(item => {
+        return {
+          value: item.name
+        }
+      })
+
+      cb(data)
+    },
+    /**
+     * 查询
+     * @returns {Promise<void>}
+     */
+    async onHandleSearch() {
+      await this.getLiketData()
+    },
+    /**
+     * 数据重置
+     */
+    onHnadleReset() {
+      this.searchForm = {
+        article: '',
+        video: '',
+        userName: ''
+      }
+
+      this.getLiketData()
     }
   }
 }

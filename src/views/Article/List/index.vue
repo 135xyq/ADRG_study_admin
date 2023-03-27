@@ -71,6 +71,7 @@
     <div class="table-container">
       <el-table
         ref="multipleTable"
+        v-loading="loading"
         :data="tableData"
         border
         style="width: 100%"
@@ -237,6 +238,7 @@ export default {
         category: '',
         order: ''
       },
+      loading: false, // 加载中
       category: [], // 分类列表
       total: 0,
       deleteIds: []// 要删除的数据id
@@ -265,9 +267,13 @@ export default {
      * @returns {Promise<void>}
      */
     async getArticleData() {
+      this.loading = true
+
       const res = await getArticles(this.form)
       this.total = res.data.total
       this.tableData = res.data.data
+
+      this.loading = false
     },
     /**
      * 获取分类列表

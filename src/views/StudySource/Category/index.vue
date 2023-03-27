@@ -26,6 +26,7 @@
     </div>
     <div class="table-container">
       <el-table
+        v-loading="loading"
         :data="tableData"
         :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
         border

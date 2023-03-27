@@ -70,6 +70,7 @@
     <div class="table-container">
       <el-table
         ref="multipleTable"
+        v-loading="loading"
         :data="tableData"
         border
         style="width: 100%"
@@ -258,6 +259,7 @@ export default {
         category: '',
         order: ''
       },
+      loading: false,
       category: [], // 分类列表
       total: 0,
       isEdit: false, // 是否是编辑
@@ -289,9 +291,13 @@ export default {
      * @returns {Promise<void>}
      */
     async getVideoData() {
+      this.loading = true
+
       const res = await getVideos(this.form)
       this.total = res.data.total
       this.tableData = res.data.data
+
+      this.loading = false
     },
     async getCategoryList() {
       const res = await getList()

@@ -7,7 +7,7 @@ import { getToken } from '@/utils/auth'
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000, // request timeout
+  timeout: 10000, // request timeout
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded'
   }
@@ -56,7 +56,7 @@ service.interceptors.response.use(
         duration: 2000
       })
       // 状态码为403代表token验证失败
-      if(res.code === 403) {
+      if (res.code === 403) {
         store.dispatch('user/resetToken').then(() => {
           location.reload()
         })
@@ -85,7 +85,7 @@ service.interceptors.response.use(
     Message({
       message: error.msg,
       type: 'error',
-      duration: 5 * 1000
+      duration: 2 * 1000
     })
     return Promise.reject(error)
   }

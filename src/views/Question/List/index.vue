@@ -77,6 +77,7 @@
     <div class="table-container">
       <el-table
         ref="multipleTable"
+        v-loading="loading"
         :data="tableData"
         :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
         border
@@ -119,7 +120,7 @@
         </el-table-column>
         <el-table-column
           align="center"
-          label="答题数"
+          label="答题人次"
           prop="test_count"
           show-overflow-tooltip
         />
@@ -130,12 +131,14 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            {{ ((scope.row.solve_count / scope.row.test_count) * 100).toFixed(2) + '%' }}
+            {{
+              scope.row.solve_count === 0 ? '0%' : ((scope.row.solve_count / scope.row.test_count) * 100).toFixed(2) + '%'
+            }}
           </template>
         </el-table-column>
         <el-table-column
           align="center"
-          label="种类"
+          label="类型"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
@@ -144,7 +147,7 @@
         </el-table-column>
         <el-table-column
           align="center"
-          label="等级"
+          label="难度"
           show-overflow-tooltip
         >
           <template slot-scope="scope">
@@ -176,12 +179,13 @@
           width="200"
         >
           <template slot-scope="scope">
-            <el-tag
-              type="success"
-              @click="onHandleGoToCategory(scope.row.question_category_id)"
-            >
-              {{ scope.row.questionCategory.title }}
-            </el-tag>
+            <el-link @click="onHandleGoToCategory(scope.row.question_category_id)">
+              <el-tag
+                type="success"
+              >
+                {{ scope.row.questionCategory.title }}
+              </el-tag>
+            </el-link>
           </template>
         </el-table-column>
         <el-table-column
@@ -210,7 +214,7 @@
         @current-change="onHandleCurrentChange"
       />
     </div>
-    <Detail :form-data="detailData" :dialog-show="showDetailDialog" @closeDetail="onHandleCloseDetail" />
+    <Detail :dialog-show="showDetailDialog" :form-data="detailData" @closeDetail="onHandleCloseDetail" />
     <Edit :form-data="newForm" :is-edit="isEdit" :show-dialog="showEditDialog" @closeEditDialog="onHandleCloseDialog" />
   </div>
 </template>
@@ -250,6 +254,7 @@ export default {
         order: '',
         parse: ''
       },
+      loading: false, // 数据加载
       category: [], // 分类列表
       total: 0,
       isEdit: false, // 是否是编辑
@@ -297,9 +302,13 @@ export default {
      * @returns {Promise<void>}
      */
     async getQuestionData() {
+      this.loading = true
+
       const res = await getQuestion(this.form)
       this.total = res.data.total
       this.tableData = res.data.data
+
+      this.loading = false
     },
     /**
      * 获取分类列表

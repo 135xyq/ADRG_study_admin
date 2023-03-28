@@ -115,7 +115,7 @@ export const constantRoutes = [
     path: '/question',
     component: Layout,
     redirect: '/qusetion/category',
-    name: 'StudySource',
+    name: 'Qusetion',
     meta: { title: '题库', icon: 'form' },
     children: [
       {

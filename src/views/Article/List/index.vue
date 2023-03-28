@@ -256,8 +256,9 @@ export default {
   },
   async created() {
     // 如果是从指定分类跳转过来
-    if (this.$route.query.id) {
-      this.form.category = this.$route.query.id
+    if (this.$route.params.id) {
+      // console.log(this.$route.params)
+      this.form.category = this.$route.params.id
     }
     await this.getArticleData() // 获取分页数据
     await this.getCategoryList() // 获取分类列表

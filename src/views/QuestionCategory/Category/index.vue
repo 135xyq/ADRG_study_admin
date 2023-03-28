@@ -227,14 +227,14 @@ export default {
      * @param id 分类id
      */
     onHandleGoToQuestion(id) {
-      this.$router.push({ name: 'QuestionList', query: { id: id }})
+      this.$router.push({ name: 'QuestionList', params: { id: id }})
     },
     /**
      * 跳转至刷题记录页
      * @param id 分类id
      */
     onHandleGoToQuestionReslove(id) {
-      this.$router.push({ name: 'QuestionReslove', query: { id: id }})
+      this.$router.push({ name: 'QuestionReslove', params: { id: id }})
     },
     /**
      * 修改每页显示数量

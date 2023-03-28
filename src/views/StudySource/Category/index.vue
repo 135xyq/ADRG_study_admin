@@ -219,14 +219,14 @@ export default {
      * @param id 分类id
      */
     onHandleGoToVideo(id) {
-      this.$router.push({ name: 'Video', query: { id: id }})
+      this.$router.push({ name: 'VideoList', params: { id: id }})
     },
     /**
      * 跳转至文章列表页
      * @param id 分类id
      */
     onHandleGoToArticle(id) {
-      this.$router.push({ name: 'Article', query: { id: id }})
+      this.$router.push({ name: 'ArticleList', params: { id: id }})
     },
     /**
      * 修改每页显示数量

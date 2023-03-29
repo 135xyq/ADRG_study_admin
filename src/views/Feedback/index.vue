@@ -1,5 +1,5 @@
 <template>
-  <div class="comment-container">
+  <div class="feedback-container">
     <div class="search-container">
       <el-form :inline="true" :model="searchForm" class="demo-form-inline" size="mini">
         <el-form-item label="用户姓名">
@@ -16,10 +16,9 @@
           <el-input v-model="searchForm.keyword" placeholder="内容关键词" />
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="searchForm.status" clearable placeholder="评论状态" @change="onHandleSubmit">
-            <el-option :value="0" label="待审核" />
-            <el-option :value="1" label="审核通过" />
-            <el-option :value="2" label="审核不通过" />
+          <el-select v-model="searchForm.status" clearable placeholder="用户反馈状态" @change="onHandleSubmit">
+            <el-option :value="0" label="待回复" />
+            <el-option :value="1" label="已回复" />
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -34,10 +33,11 @@
       <el-table
         ref="multipleTable"
         v-loading="loading"
-        :data="commentData"
+        stripe
+        :data="feedbackData"
+        :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
         border
         style="width: 100%"
-        :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
         tooltip-effect="dark"
         @selection-change="onHandleSelectionChange"
       >
@@ -49,69 +49,69 @@
           align="center"
           label="编号"
           prop="id"
-          width="120"
+          width="100"
         />
         <el-table-column
           align="center"
-          label="评论内容"
+          label="反馈用户"
+          prop="appletUser.nick_name"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="center"
+          label="反馈内容"
           prop="content"
           show-overflow-tooltip
-          width="500"
+          width="400"
         />
         <el-table-column
-          align="center"
-          label="所属视频/文章"
-          show-overflow-tooltip
+          label="问题图片"
+          prop="description"
+          width="110"
         >
           <template slot-scope="scope">
-            <el-link v-if="scope.row.video_id" @click="onHandleGoToSource('video',scope.row.video_id)">
-              {{ scope.row.video.title }}
-            </el-link>
-            <el-link v-if="scope.row.article_id" @click="onHandleGoToSource('article',scope.row.article_id)">
-              {{ scope.row.article.title }}
-            </el-link>
+            <el-image
+              :preview-src-list="[scope.row.image]"
+              :src="scope.row.image"
+              style="width: 100px; height: 100px"
+            />
           </template>
         </el-table-column>
         <el-table-column
           align="center"
-          label="评论用户"
-          prop="user.nick_name"
-          show-overflow-tooltip
-        />
-        <el-table-column
-          align="center"
-          label="评论时间"
+          label="反馈时间"
           prop="create_time"
           show-overflow-tooltip
         />
         <el-table-column
           align="center"
-          label="评论状态"
+          label="回复内容"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            {{ scope.row.is_response === 1 ? scope.row.response_content : '暂未回复' }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="用户反馈状态"
         >
           <template slot-scope="scope">
             <el-tag
-              v-if="scope.row.status === 0"
+              v-if="scope.row.is_response === 0"
               effect="dark"
               size="small"
               type="info"
             >
-              待审核
+              待回复
             </el-tag>
             <el-tag
-              v-if="scope.row.status === 1"
+              v-if="scope.row.is_response === 1"
               effect="dark"
               size="small"
               type="success"
             >
-              审核通过
-            </el-tag>
-            <el-tag
-              v-if="scope.row.status === 2"
-              effect="dark"
-              size="small"
-              type="danger"
-            >
-              审核不通过
+              已回复
             </el-tag>
           </template>
         </el-table-column>
@@ -119,15 +119,15 @@
           align="center"
           fixed="right"
           label="操作"
+          width="100px"
         >
           <template slot-scope="scope">
             <el-button
-              :type="scope.row.status === 0 ? 'primary' : 'warning'"
+              v-if="scope.row.is_response === 0"
               size="mini"
-              @click="onHandleAuditComment(scope.row)"
-            >{{
-              scope.row.status === 0 ? '审核' : '复核'
-            }}
+              type="primary"
+              @click="onHandleResponse(scope.row)"
+            >回复
             </el-button>
           </template>
         </el-table-column>
@@ -145,14 +145,10 @@
       />
     </div>
     <div class="audit-container">
-      <el-dialog :visible.sync="dialogFormVisible" title="评论审核">
-        <el-form :model="audtForm">
-          <el-form-item label="状态" label-width="120px">
-            <el-radio v-model="audtForm.status" :label="1">审核通过</el-radio>
-            <el-radio v-model="audtForm.status" :label="2">审核不通过</el-radio>
-          </el-form-item>
-          <el-form-item label="备注信息" label-width="120px">
-            <el-input v-model="audtForm.err_msg" autocomplete="off" type="textarea" />
+      <el-dialog :visible.sync="dialogFormVisible" title="反馈回复">
+        <el-form :model="responseForm">
+          <el-form-item label="回复内容" label-width="120px">
+            <el-input v-model="responseForm.responseContent" autocomplete="off" autosize type="textarea" />
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -165,67 +161,47 @@
 </template>
 
 <script>
-// 评论列表
+// 用户反馈列表
 
-import { deleteComment, getCommentPage, auditComment } from '@/api/comment'
+import { deleteFeedback, getFeedbackPage, responseFeedback } from '@/api/feedback'
 import { getAppletUserList } from '@/api/appletUser'
 
 export default {
-  name: 'Comment',
+  name: 'Feedback',
   data() {
     return {
-      commentData: [], // 表格数据
+      feedbackData: [], // 表格数据
       searchForm: {
         page: 1,
         limit: 20,
         status: '',
         keyword: '',
-        article: '',
-        video: '',
         userName: ''
       }, // 查找数据
       total: 0, // 数据总量
-      deleteIds: [], // 要删除评论的列表
+      deleteIds: [], // 要删除用户反馈的列表
       loading: false, // 数据加载中
       dialogFormVisible: false,
-      audtForm: {
+      responseForm: {
         id: '',
-        status: '',
-        err_msg: ''
+        responseContent: ''
       } // 审核数据
     }
   },
-  computed: {
-    // 获取评论的状态
-    getCommentStatus(status) {
-      return status => {
-        switch (status) {
-          case 0:
-            return '待审核'
-          case 1:
-            return '已审核'
-          case 2:
-            return '审核不通过'
-          default:
-            return '未知状态'
-        }
-      }
-    }
-  },
   async created() {
-    await this.getCommentData()
+    await this.getFeedBackData()
   },
   methods: {
     /**
-     * 获取评论列表
+     * 获取反馈列表
      * @returns {Promise<void>}
      */
-    async getCommentData() {
+    async getFeedBackData() {
       this.loading = true
 
-      const res = await getCommentPage(this.searchForm)
+      const res = await getFeedbackPage(this.searchForm)
       this.total = res.data.total
-      this.commentData = res.data.data
+      this.feedbackData = res.data.data
 
       this.loading = false
     },
@@ -240,11 +216,10 @@ export default {
      * 打开审核弹窗
      * @param data
      */
-    onHandleAuditComment(data) {
+    onHandleResponse(data) {
       this.dialogFormVisible = true
-      this.audtForm.id = data.id
-      this.audtForm.status = data.status
-      this.audtForm.err_msg = data.err_msg
+      this.responseForm.id = data.id
+      this.responseForm.responseContent = data.response_content
     },
     /**
      * 修改每页显示数量
@@ -252,7 +227,7 @@ export default {
      */
     async onHandleSizeChange(limit) {
       this.searchForm.limit = limit
-      await this.getCommentData()
+      await this.getFeedBackData()
     },
     /**
      * 修改当前页码数
@@ -260,14 +235,14 @@ export default {
      */
     async onHandleCurrentChange(page) {
       this.searchForm.page = page
-      await this.getCommentData()
+      await this.getFeedBackData()
     },
     /**
      * 数据查询
      * @returns {Promise<void>}
      */
     async onHandleSubmit() {
-      await this.getCommentData()
+      await this.getFeedBackData()
     },
     /**
      * 查询信息重置
@@ -280,25 +255,25 @@ export default {
         status: '',
         userName: ''
       }
-      await this.getCommentData()
+      await this.getFeedBackData()
     },
     /**
-     * 批量删除评论
+     * 批量删除用户反馈
      */
     onHandleDelete() {
-      this.$confirm('此操作将删除选中评论, 是否继续?', '提示', {
+      this.$confirm('此操作将删除选中用户反馈, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(async() => {
         const ids = this.deleteIds.join()
-        const res = await deleteComment({ id: ids })
+        const res = await deleteFeedback({ id: ids })
         this.$message({
           type: 'success',
           message: res.msg
         })
-        // 重新获取评论列表
-        await this.getCommentData()
+        // 重新获取用户反馈列表
+        await this.getFeedBackData()
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -323,10 +298,9 @@ export default {
      * 取消审核
      */
     onHandleCloseDialog() {
-      this.audtForm = {
+      this.responseForm = {
         id: '',
-        status: '',
-        err_msg: ''
+        responseContent: ''
       }
       this.dialogFormVisible = false
     },
@@ -334,13 +308,16 @@ export default {
      * 确认修改
      */
     async onHandleConfirmDialog() {
-      const res = await auditComment(this.audtForm)
+      const res = await responseFeedback({
+        id: this.responseForm.id,
+        response_content: this.responseForm.responseContent
+      })
       this.$message({
         message: res.msg,
         type: 'success'
       })
       this.onHandleCloseDialog()
-      await this.getCommentData()
+      await this.getFeedBackData()
     },
     /**
      * 获取搜索建议
@@ -363,7 +340,7 @@ export default {
      * @returns {Promise<void>}
      */
     async onHandleSearch() {
-      await this.getCommentData()
+      await this.getFeedBackData()
     }
   }
 }

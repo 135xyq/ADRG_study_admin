@@ -178,6 +178,19 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/feedback',
+    name: 'Feedback',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'FeedbackList',
+        component: () => import('@/views/Feedback/index'),
+        meta: { title: '用户反馈', icon: 'el-icon-s-promotion' }
+      }
+    ]
+  },
+  {
     path: '/appletuser',
     name: 'AppletUser',
     component: Layout,

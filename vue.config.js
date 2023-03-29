@@ -39,6 +39,9 @@ module.exports = {
     proxy: {
       '/admin': {
         target: 'http://127.0.0.1:9000'
+      },
+      '/applet': {
+        target: 'http://127.0.0.1:9000'
       }
     }
   },

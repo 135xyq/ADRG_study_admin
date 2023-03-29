@@ -44,7 +44,7 @@
         </el-table-column>
         <el-table-column
           align="center"
-          label="视频缩略图"
+          label="头像"
           prop="description"
         >
           <template slot-scope="scope">
@@ -55,6 +55,12 @@
             />
           </template>
         </el-table-column>
+        <el-table-column
+          align="center"
+          label="试卷出题数"
+          prop="question_count"
+          show-overflow-tooltip
+        />
         <el-table-column
           align="center"
           label="注册日期"

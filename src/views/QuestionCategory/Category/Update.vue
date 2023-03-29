@@ -6,7 +6,7 @@
           <el-input v-model="form.title" autocomplete="off" />
         </el-form-item>
         <el-form-item label="分类描述信息" label-width="120px">
-          <el-input v-model="form.description" autocomplete="off" type="textarea" />
+          <el-input v-model="form.description" autocomplete="off" type="textarea" autosize />
         </el-form-item>
         <el-form-item label="排序" label-width="120px">
           <el-input-number v-model="form.sort" :min="1" :max="100" label="排序" />

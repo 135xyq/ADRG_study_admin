@@ -15,7 +15,7 @@
           <div class="top">
             <el-row>
               <el-col :span="15">
-                <el-input v-model="newOption" placeholder="请输入新选项" type="textarea" />
+                <el-input v-model="newOption" placeholder="请输入新选项" type="textarea" autosize />
               </el-col>
               <el-col :span="7" style="margin-left: 20px">
                 <el-button type="primary" @click="addOption">添加选项</el-button>
@@ -32,7 +32,7 @@
             >
               <el-row>
                 <el-col :span="10" class="col">
-                  <el-input v-model="option.value" placeholder="请输入选项内容" type="textarea" />
+                  <el-input v-model="option.value" placeholder="请输入选项内容" type="textarea" autosize />
                 </el-col>
                 <el-col :span="4" class="col">
                   <el-button type="danger" @click="deleteOption(index)">删除选项</el-button>
@@ -54,10 +54,10 @@
         </el-checkbox-group>
       </el-form-item>
       <el-form-item v-else label="答案" label-width="100px">
-        <el-input v-model="otherAnswer" autocomplete="off" type="textarea" placeholder="答案" />
+        <el-input v-model="otherAnswer" autocomplete="off" type="textarea" placeholder="答案" autosize />
       </el-form-item>
       <el-form-item label="解析" label-width="100px">
-        <el-input v-model="form.parse" autocomplete="off" type="textarea" placeholder="题目解析" />
+        <el-input v-model="form.parse" autocomplete="off" type="textarea" placeholder="题目解析" autosize />
       </el-form-item>
       <el-form-item label="分类" label-width="100px">
         <el-select v-model="form.question_category_id" placeholder="题目分类">

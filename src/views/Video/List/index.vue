@@ -468,7 +468,7 @@ export default {
      * @param routeName
      */
     onHandleGoToUserOption(id, routeName) {
-      this.$router.push({ name: routeName, params: { id: id }})
+      this.$router.push({ name: routeName, params: { id: id, type: 'video' }})
     }
   }
 }

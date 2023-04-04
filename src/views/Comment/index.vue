@@ -22,6 +22,12 @@
             <el-option :value="2" label="审核不通过" />
           </el-select>
         </el-form-item>
+        <el-form-item label="视频id">
+          <el-input v-model="searchForm.video" clearable placeholder="视频id" />
+        </el-form-item>
+        <el-form-item label="文章id">
+          <el-input v-model="searchForm.article" clearable placeholder="文章id" />
+        </el-form-item>
         <el-form-item>
           <el-button icon="el-icon-search" type="primary" @click="onHandleSubmit">查询</el-button>
           <el-button icon="el-icon-refresh" @click="onHandleReset">重置</el-button>
@@ -213,6 +219,15 @@ export default {
     }
   },
   async created() {
+    // 接受传来的参数
+    if (this.$route.params.id) {
+      if (this.$route.params.type === 'article') {
+        this.searchForm.article = this.$route.params.id
+      } else if (this.$route.params.type === 'video') {
+        this.searchForm.video = this.$route.params.id
+      }
+    }
+
     await this.getCommentData()
   },
   methods: {
@@ -278,7 +293,9 @@ export default {
         ...this.searchForm,
         keyword: '',
         status: '',
-        userName: ''
+        userName: '',
+        video: '',
+        article: ''
       }
       await this.getCommentData()
     },

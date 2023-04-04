@@ -211,13 +211,41 @@
           align="center"
           fixed="right"
           label="操作"
-          width="200"
+          width="260"
         >
           <template slot-scope="scope">
-            <el-button icon="el-icon-edit" size="mini" type="primary" @click="onHandleEdit(scope.row)">编辑
-            </el-button>
-            <el-button icon="el-icon-view" size="mini" type="info" @click="onHandleShowDetail(scope.row.id)">详情
-            </el-button>
+            <el-row class="el-row">
+              <el-button icon="el-icon-edit" size="mini" type="primary" @click="onHandleEdit(scope.row)">视频编辑
+              </el-button>
+              <el-button icon="el-icon-view" size="mini" type="info" @click="onHandleShowDetail(scope.row.id)">视频详情
+              </el-button>
+            </el-row>
+            <el-row class="el-row">
+              <el-button
+                icon="el-icon-s-comment"
+                size="mini"
+                type="warning"
+                @click="onHandleGoToUserOption(scope.row.id,'CommentList')"
+              >
+                评论列表
+              </el-button>
+              <el-button
+                icon="el-icon-thumb"
+                size="mini"
+                type="success"
+                @click="onHandleGoToUserOption(scope.row.id,'LikeList')"
+              >点赞列表
+              </el-button>
+            </el-row>
+            <el-row class="el-row">
+              <el-button
+                icon="el-icon-star-on"
+                size="mini"
+                type="danger"
+                @click="onHandleGoToUserOption(scope.row.id,'StarList')"
+              >收藏列表
+              </el-button>
+            </el-row>
           </template>
         </el-table-column>
       </el-table>
@@ -433,6 +461,14 @@ export default {
       })
 
       await this.getVideoData()
+    },
+    /**
+     * 跳转到视频的评论、点赞、收藏等页面
+     * @param id
+     * @param routeName
+     */
+    onHandleGoToUserOption(id, routeName) {
+      this.$router.push({ name: routeName, params: { id: id }})
     }
   }
 }
@@ -447,5 +483,9 @@ export default {
   display: flex;
   justify-content: right;
   margin: 20px;
+}
+
+.el-row {
+  margin-bottom: 6px;
 }
 </style>

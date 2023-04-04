@@ -12,6 +12,12 @@
             @select="onHandleSearch"
           />
         </el-form-item>
+        <el-form-item label="视频id">
+          <el-input v-model="searchForm.video" clearable placeholder="视频id" />
+        </el-form-item>
+        <el-form-item label="文章id">
+          <el-input v-model="searchForm.article" clearable placeholder="文章id" />
+        </el-form-item>
         <el-form-item>
           <el-button icon="el-icon-search" type="primary" @click="onHandleSearch">查询
           </el-button>
@@ -115,6 +121,15 @@ export default {
   },
   computed: {},
   async created() {
+    // 接收传来的参数
+    if (this.$route.params.id) {
+      if (this.$route.params.type === 'article') {
+        this.searchForm.article = this.$route.params.id
+      } else if (this.$route.params.type === 'video') {
+        this.searchForm.video = this.$route.params.id
+      }
+    }
+
     await this.getStartData()
   },
   methods: {

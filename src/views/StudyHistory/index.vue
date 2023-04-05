@@ -25,6 +25,12 @@
             <el-option :value="3" label="帖子" />
           </el-select>
         </el-form-item>
+        <el-form-item label="排序方式">
+          <el-select v-model="searchForm.sort" clearable placeholder="排序方式" @change="onHandleSearch">
+            <el-option value="total_time" label="学习总时长" />
+            <el-option value="total_count" label="学习次数" />
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button icon="el-icon-search" type="primary" @click="onHandleSearch">查询
           </el-button>
@@ -64,6 +70,7 @@
           align="center"
           label="所属视频/文章"
           show-overflow-tooltip
+          width="450"
         >
           <template slot-scope="scope">
             <el-link v-if="scope.row.type === 1" @click="onHandleGoToSource('video',scope.row.video_id)">
@@ -94,7 +101,26 @@
         </el-table-column>
         <el-table-column
           align="center"
-          label="最近一次时间"
+          label="学习次数"
+          prop="total_count"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="center"
+          label="学习总时长"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">{{ formateDate(scope.row.total_time) }}</template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="开始学习时间"
+          prop="create_time"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="center"
+          label="最后一次学习时间"
           prop="update_time"
           show-overflow-tooltip
         />
@@ -120,6 +146,7 @@
 import { deleteHistory, getHistoryPage } from '@/api/studyHistory'
 import { getAppletUserList } from '@/api/appletUser'
 import { getType } from '@/utils/common'
+import { formateDate } from '@/utils/formate'
 
 export default {
   name: 'History',
@@ -132,7 +159,8 @@ export default {
         article: '',
         video: '',
         userName: '',
-        type: ''
+        type: '',
+        sort: ''
       }, // 查找数据
       total: 0, // 数据总量
       deleteIds: [], // 要删除历史记录的列表
@@ -154,6 +182,7 @@ export default {
   },
   methods: {
     getType,
+    formateDate,
     /**
      * 获取学习历史记录列表
      * @returns {Promise<void>}
@@ -258,7 +287,8 @@ export default {
         article: '',
         video: '',
         userName: '',
-        type: ''
+        type: '',
+        sort: ''
       }
 
       this.getHistoryData()

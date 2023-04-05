@@ -38,6 +38,7 @@
         v-loading="loading"
         :data="commentData"
         border
+        stripe
         style="width: 100%"
         :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
         tooltip-effect="dark"

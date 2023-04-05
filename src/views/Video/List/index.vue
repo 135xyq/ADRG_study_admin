@@ -75,6 +75,7 @@
         :data="tableData"
         :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
         border
+        stripe
         style="width: 100%"
         tooltip-effect="dark"
         @selection-change="onHandleSelectionChange"
@@ -244,6 +245,12 @@
                 type="danger"
                 @click="onHandleGoToUserOption(scope.row.id,'StarList')"
               >收藏列表
+              </el-button>
+              <el-button
+                icon="el-icon-s-claim"
+                size="mini"
+                @click="onHandleGoToUserOption(scope.row.id,'StudyHistoryList')"
+              >学习记录
               </el-button>
             </el-row>
           </template>

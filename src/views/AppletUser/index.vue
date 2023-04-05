@@ -18,6 +18,7 @@
         :data="tableData"
         :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
         border
+        stripe
         style="width: 100%"
         tooltip-effect="dark"
       >

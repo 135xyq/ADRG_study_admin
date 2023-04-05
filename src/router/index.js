@@ -229,6 +229,11 @@ export const constantRoutes = [
         component: () => import('@/views/Set/AppletConfig'),
         meta: { title: '小程序配置', icon: 'el-icon-s-tools' }
       }, {
+        path: 'appletabout',
+        name: 'AppletAbout',
+        component: () => import('@/views/Set/AppletAbout'),
+        meta: { title: '小程序使用指南', icon: 'el-icon-info' }
+      }, {
         path: 'log',
         name: 'Log',
         component: () => import('@/views/Set/Log'),

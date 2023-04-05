@@ -165,6 +165,19 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/history',
+    name: 'History',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'HistoryList',
+        component: () => import('@/views/StudyHistory/index'),
+        meta: { title: '学习记录', icon: 'el-icon-s-claim' }
+      }
+    ]
+  },
+  {
     path: '/star',
     name: 'Star',
     component: Layout,

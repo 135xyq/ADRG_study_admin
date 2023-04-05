@@ -2,14 +2,7 @@
   <div class="container">
     <el-form :model="aboutData" class="form" label-width="100px" status-icon>
       <el-form-item label="指南内容：">
-        <el-input
-          v-model="aboutData.content"
-          :rows="20"
-          autofocus
-          class="input"
-          placeholder="请输入指南内容"
-          type="textarea"
-        />
+        <mavon-editor ref="md" v-model="aboutData.content" placeholder="编辑文章内容" @imgAdd="onHandleAddImg" />
       </el-form-item>
       <el-form-item size="large">
         <el-button class="button" type="primary" @click="onSubmit">提交</el-button>
@@ -22,6 +15,7 @@
 // 小程序使用指南页
 
 import { getAppletAbout, updateAppletAbout } from '@/api/appletAbout'
+import request from '@/utils/request'
 
 export default {
   name: 'AppletAbout',
@@ -48,6 +42,29 @@ export default {
         this.aboutData.id = res.data.id
       }
     },
+    /**
+     * 上传markdown中的图片
+     * @param pos
+     * @param $file
+     */
+    onHandleAddImg(pos, $file) {
+      // 第一步.将图片上传到服务器.
+      const formdata = new FormData()
+      formdata.append('file', $file)
+      request({
+        url: '/admin/upload/upload',
+        method: 'post',
+        data: formdata,
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }).then((res) => {
+        // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
+        this.$refs.md.$img2Url(pos, res.data.url)
+      })
+    },
+    /**
+     * 提交修改
+     * @returns {Promise<void>}
+     */
     async onSubmit() {
       const res = await updateAppletAbout({
         ...this.aboutData

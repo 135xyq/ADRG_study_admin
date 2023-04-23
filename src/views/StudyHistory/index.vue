@@ -49,7 +49,7 @@
       <el-table
         ref="multipleTable"
         v-loading="loading"
-        :data="commentData"
+        :data="historyData"
         :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
         border
         stripe
@@ -153,7 +153,7 @@ export default {
   name: 'History',
   data() {
     return {
-      commentData: [], // 表格数据
+      historyData: [], // 表格数据
       searchForm: {
         page: 1,
         limit: 20,
@@ -193,7 +193,7 @@ export default {
 
       const res = await getHistoryPage(this.searchForm)
       this.total = res.data.total
-      this.commentData = res.data.data
+      this.historyData = res.data.data
 
       this.loading = false
     },

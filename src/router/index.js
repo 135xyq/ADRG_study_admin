@@ -131,9 +131,9 @@ export const constantRoutes = [
         meta: { title: '题目列表', icon: 'el-icon-notebook-2' }
       },
       {
-        path: 'reslove',
-        name: 'QuestionReslove',
-        component: () => import('@/views/QuestionReslove'),
+        path: 'record',
+        name: 'QuestionRecord',
+        component: () => import('@/views/QuestionRecord'),
         meta: { title: '刷题记录', icon: 'el-icon-s-release' }
       }
     ]

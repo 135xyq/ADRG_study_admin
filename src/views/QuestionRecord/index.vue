@@ -1,5 +1,5 @@
 <template>
-  <div class="question-reslove-container">
+  <div v-loading="deleteLoading" class="question-reslove-container">
     <div class="search-container">
       <el-form :inline="true" :model="searchForm" class="demo-form-inline" size="mini">
         <el-form-item label="用户姓名">
@@ -169,7 +169,7 @@
 
 import { getAppletUserList } from '@/api/appletUser'
 import { getList as getQuestionCategoryList } from '@/api/questionCategory'
-import { getQuestionRecordPage } from '@/api/questionRecord'
+import { deleteQuestionRecord, getQuestionRecordPage } from '@/api/questionRecord'
 import { formateDate } from '@/utils/formate'
 
 export default {
@@ -187,6 +187,7 @@ export default {
       questionCategoryList: [], // 题目分类列表
       total: 0,
       loading: false,
+      deleteLoading: false, // 删除时的加载
       deleteIds: [], // 要删除的id列表
       questionRecordData: [] // 记录列表
     }
@@ -253,8 +254,36 @@ export default {
     onHnadleReset() {
       console.log('reset')
     },
-    onHandleDelete() {
-      console.log('delete', this.deleteIds)
+    async onHandleDelete() {
+      // console.log('delete', this.deleteIds)
+
+      this.$confirm('此操作将删除选中刷题记录信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.deleteLoading = true
+
+        const ids = this.deleteIds.join()
+        deleteQuestionRecord({ id: ids }).then(async res => {
+          this.$message({
+            type: 'success',
+            message: res.msg
+          })
+
+          // 重新获取学刷题记录列表
+          await this.getQuestionRecordData()
+
+          this.deleteLoading = false
+        }).catch((res) => {
+          this.deleteLoading = false
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     },
     /**
      * 多选数据改变处理函数

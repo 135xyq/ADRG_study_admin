@@ -150,6 +150,17 @@
         </el-table-column>
       </el-table>
     </div>
+    <div class="page-container">
+      <el-pagination
+        :current-page="searchForm.page"
+        :page-size="searchForm.limit"
+        :page-sizes="[20, 30, 50, 100,200]"
+        :total="total"
+        layout="total, sizes, prev, pager, next, jumper"
+        @size-change="onHandleSizeChange"
+        @current-change="onHandleCurrentChange"
+      />
+    </div>
   </div>
 </template>
 
@@ -265,6 +276,22 @@ export default {
      */
     onHandleGoUser(id) {
       this.$router.push({ name: 'AppletUser', params: { id: id }})
+    },
+    /**
+     * 修改每页显示数量
+     * @param limit
+     */
+    async onHandleSizeChange(limit) {
+      this.searchForm.limit = limit
+      await this.getQuestionRecordData()
+    },
+    /**
+     * 修改当前页码数
+     * @param page
+     */
+    async onHandleCurrentChange(page) {
+      this.searchForm.page = page
+      await this.getQuestionRecordData()
     }
   }
 }

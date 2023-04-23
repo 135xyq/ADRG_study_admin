@@ -248,11 +248,27 @@ export default {
 
       this.loading = false
     },
+    /**
+     * 查询
+     * @returns {Promise<void>}
+     */
     async onHandleSearch() {
-      console.log(this.searchForm)
+      // console.log(this.searchForm)
+
+      // 请求数据
+      await this.getQuestionRecordData()
     },
-    onHnadleReset() {
-      console.log('reset')
+    async onHnadleReset() {
+      // console.log('reset')
+      this.searchForm = {
+        ...this.searchForm,
+        user: '',
+        type: -1,
+        category: '',
+        time: []
+      }
+
+      await this.getQuestionRecordData()
     },
     async onHandleDelete() {
       // console.log('delete', this.deleteIds)

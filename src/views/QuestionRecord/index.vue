@@ -2,7 +2,7 @@
   <div v-loading="deleteLoading" class="question-reslove-container">
     <div class="search-container">
       <el-form :inline="true" :model="searchForm" class="demo-form-inline" size="mini">
-        <el-form-item label="用户姓名">
+        <el-form-item label="用户">
           <el-autocomplete
             v-model="searchForm.userName"
             :fetch-suggestions="querySearchAsync"
@@ -12,7 +12,7 @@
             @select="onHandleSearch"
           />
         </el-form-item>
-        <el-form-item label="题目分类列表">
+        <el-form-item label="题目分类">
           <el-select v-model="searchForm.category" clearable placeholder="题目分类列表" @change="onHandleSearch">
             <el-option v-for="item in questionCategoryList" :key="item.value" :label="item.key" :value="item.value" />
           </el-select>

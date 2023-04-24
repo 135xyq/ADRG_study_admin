@@ -12,35 +12,36 @@
     .detail {
       margin: 20px;
       display: flex;
-     justify-content: center;
+      justify-content: center;
 
-      .item{
+      .item {
         margin: 0 10px;
       }
 
-      .error-count{
+      .error-count {
         color: red;
       }
 
-      .right-count{
+      .right-count {
         color: green;
       }
     }
   }
 
-  .question-container{
+  .question-container {
     width: 80%;
     margin: 30px auto 0;
     background: #eeeeee4f;
     padding: 20px;
     border-radius: 10px;
 
-    .question{
+    .question {
       background: #fff;
       padding: 20px 10px;
       border-radius: 10px;
       margin: 20px 0;
-      .title{
+
+      .title {
         color: #000;
         font-size: 18px;
         font-weight: 700;
@@ -49,6 +50,7 @@
 
       .has-option {
         margin-left: 10px;
+
         .options {
           .option {
             margin: 10px 0;
@@ -69,54 +71,57 @@
           }
         }
 
-        .answer{
+        .answer {
           margin: 20px 0 20px 10px;
           display: flex;
 
-          .right-answer,.user-answer{
+          .right-answer, .user-answer {
             display: flex;
           }
 
-          .right-answer{
-            .answer-title{
+          .right-answer {
+            .answer-title {
               font-size: 16px;
               font-weight: 700;
               color: green;
               margin-right: 20px;
             }
 
-            .answer-content{
+            .answer-content {
               color: green;
             }
           }
 
-          .user-answer{
+          .user-answer {
             margin-left: 30px;
 
-            .answer-title{
+            .answer-title {
               font-size: 16px;
               font-weight: 700;
               margin-right: 20px;
               color: #000;
             }
-            .answer-content{
+
+            .answer-content {
               color: #000;
             }
 
-            &.right{
-              .answer-title{
+            &.right {
+              .answer-title {
                 color: green;
               }
-              .answer-content{
+
+              .answer-content {
                 color: green;
               }
             }
 
-            &.error{
-              .answer-title{
+            &.error {
+              .answer-title {
                 color: red;
               }
-              .answer-content{
+
+              .answer-content {
                 color: red;
               }
             }
@@ -124,87 +129,97 @@
         }
       }
 
-      .no-option{
+      .no-option {
         margin-left: 10px;
-        .right-answer{
+
+        .right-answer {
           margin: 20px 0 20px 10px;
-          .answer-title{
+
+          .answer-title {
             font-size: 16px;
             font-weight: 700;
             color: green;
           }
 
-          .answer-content{
+          .answer-content {
             color: green;
           }
         }
-        .user-answer{
+
+        .user-answer {
           margin: 20px 0 20px 10px;
-          .answer-title{
+
+          .answer-title {
             font-size: 16px;
             font-weight: 700;
             color: #000;
             margin-bottom: 5px;
           }
 
-          .answer-content{
+          .answer-content {
             color: #000;
           }
 
-          &.right{
-            .answer-title{
+          &.right {
+            .answer-title {
               color: green;
             }
-            .answer-content{
+
+            .answer-content {
               color: green;
             }
           }
 
-          &.error{
-            .answer-title{
+          &.error {
+            .answer-title {
               color: red;
             }
-            .answer-content{
+
+            .answer-content {
               color: red;
             }
           }
         }
       }
 
-      .result{
+      .result {
         margin: 20px 0 10px 20px;
         display: flex;
 
-        .result-title{
+        .result-title {
           color: #000;
           font-weight: 800;
           font-size: 16px;
         }
 
-        .result-content{
+        .result-content {
           margin-left: 20px;
           font-size: 20px;
           font-weight: 700;
 
-          &.right{
-            color:green;
+          &.right {
+            color: green;
           }
 
-          &.error{
+          &.error {
             color: red;
           }
         }
+
+        .result-probability {
+          margin-left: 20px;
+        }
       }
 
-      .parse{
+      .parse {
         margin-left: 20px;
 
-        .parse-title{
+        .parse-title {
           font-weight: 700;
           font-size: 16px;
         }
 
-        .parse-content{
+        .parse-content {
           margin-top: 5px;
           color: #333333c2;
           font-size: 14px;

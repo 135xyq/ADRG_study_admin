@@ -77,6 +77,7 @@
           <div class="result-title">判题结果:</div>
           <div v-if="item.is_current === 1" class="result-content right"><i class="el-icon-check" /></div>
           <div v-if="item.is_current === 0" class="result-content error"><i class="el-icon-close" /></div>
+          <div class="result-probability">与答案相似度: {{ (item.current_probability * 100).toFixed(2) }}%</div>
         </div>
         <div class="parse">
           <div class="parse-title">解析</div>

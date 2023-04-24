@@ -24,6 +24,13 @@
             <el-option :value="1" label="未完成" />
           </el-select>
         </el-form-item>
+        <el-form-item label="排序方式">
+          <el-select v-model="searchForm.sort" clearable placeholder="排序方式" @change="onHandleSearch">
+            <el-option value="create_time" label="试卷创建时间" />
+            <el-option value="submit_time" label="用户交卷时间" />
+            <el-option value="total_time" label="答题时长" />
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-date-picker
             v-model="searchForm.time"
@@ -181,6 +188,7 @@ export default {
         type: -1,
         category: '',
         time: [],
+        sort: 'create_time',
         page: 1,
         limit: 20
       },
@@ -265,7 +273,8 @@ export default {
         user: '',
         type: -1,
         category: '',
-        time: []
+        time: [],
+        sort: 'create_time'
       }
 
       await this.getQuestionRecordData()

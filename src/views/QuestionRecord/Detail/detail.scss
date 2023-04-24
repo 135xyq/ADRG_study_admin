@@ -171,6 +171,31 @@
         }
       }
 
+      .result{
+        margin: 20px 0 10px 20px;
+        display: flex;
+
+        .result-title{
+          color: #000;
+          font-weight: 800;
+          font-size: 16px;
+        }
+
+        .result-content{
+          margin-left: 20px;
+          font-size: 20px;
+          font-weight: 700;
+
+          &.right{
+            color:green;
+          }
+
+          &.error{
+            color: red;
+          }
+        }
+      }
+
       .parse{
         margin-left: 20px;
 

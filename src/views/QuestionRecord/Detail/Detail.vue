@@ -36,14 +36,24 @@
         <div class="title">{{ index + 1 }}. {{ item.question.title }}</div>
         <div v-if="item.question.type <= 1" class="has-option">
           <div class="options">
-            <div v-for="(value, key) in item.question.options" :key="key" class="option" :class="{right: item.question.answer.indexOf(key) !== -1,error:(recordInfo.is_submit === 1 && item.is_current === 0 && item.answer.indexOf(key) !==-1)}">{{ key }}. {{ value }}</div>
+            <div
+              v-for="(value, key) in item.question.options"
+              :key="key"
+              :class="{right: item.question.answer.indexOf(key) !== -1,error:(recordInfo.is_submit === 1 && item.is_current === 0 && item.answer.indexOf(key) !==-1)}"
+              class="option"
+            >{{ key }}. {{ value }}
+            </div>
           </div>
           <div class="answer">
             <div class="right-answer">
               <div class="answer-title">正确答案:</div>
               <div class="answer-content">{{ item.question.answer.join('') }}</div>
             </div>
-            <div v-if="recordInfo.is_submit === 1" class="user-answer" :class="{right:item.is_current === 1,error:item.is_current === 0}">
+            <div
+              v-if="recordInfo.is_submit === 1"
+              :class="{right:item.is_current === 1,error:item.is_current === 0}"
+              class="user-answer"
+            >
               <div class="answer-title">用户答案:</div>
               <div class="answer-content">{{ item.answer.join('') }}</div>
             </div>
@@ -54,14 +64,23 @@
             <div class="answer-title">正确答案:</div>
             <div class="answer-content">{{ item.question.answer.join('') }}</div>
           </div>
-          <div v-if="recordInfo.is_submit === 1" class="user-answer" :class="{right:item.is_current === 1,error:item.is_current === 0}">
+          <div
+            v-if="recordInfo.is_submit === 1"
+            :class="{right:item.is_current === 1,error:item.is_current === 0}"
+            class="user-answer"
+          >
             <div class="answer-title">用户答案</div>
-            <div class="answer-content">{{ item.answer.join('') ? item.answer.join('') :'未作答' }}</div>
+            <div class="answer-content">{{ item.answer.join('') ? item.answer.join('') : '未作答' }}</div>
           </div>
+        </div>
+        <div v-if="recordInfo.is_submit === 1" class="result">
+          <div class="result-title">判题结果:</div>
+          <div v-if="item.is_current === 1" class="result-content right"><i class="el-icon-check" /></div>
+          <div v-if="item.is_current === 0" class="result-content error"><i class="el-icon-close" /></div>
         </div>
         <div class="parse">
           <div class="parse-title">解析</div>
-          <div class="parse-content">{{ item.question.parse ? item.question.parse:'暂无解析' }}</div>
+          <div class="parse-content">{{ item.question.parse ? item.question.parse : '暂无解析' }}</div>
         </div>
       </div>
     </div>

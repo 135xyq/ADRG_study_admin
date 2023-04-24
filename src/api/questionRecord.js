@@ -38,3 +38,16 @@ export function getRecordQuestionDetail(data) {
     data
   })
 }
+
+/**
+ * 人工判题
+ * @param data {Object}
+ * @returns {*}
+ */
+export function peopleValidateRecord(data) {
+  return request({
+    url: '/admin/questionHistoryRecord/peopleValidateRecord',
+    method: 'post',
+    data
+  })
+}

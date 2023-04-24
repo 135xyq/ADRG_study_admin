@@ -91,7 +91,7 @@
     </div>
     <div class="btn">
       <el-button size="medium" @click="onHandleCancel">取消</el-button>
-      <el-button :loading="submitLoading" type="primary" size="medium" @click="onHandleSubmit">阅卷</el-button>
+      <el-button :loading="submitLoading" size="medium" type="primary" @click="onHandleSubmit">阅卷</el-button>
     </div>
   </div>
 </template>
@@ -99,7 +99,7 @@
 <script>
 // 人工阅卷
 
-import { getRecordQuestionDetail } from '@/api/questionRecord'
+import { getRecordQuestionDetail, peopleValidateRecord } from '@/api/questionRecord'
 import { formateDate } from '@/utils/formate'
 
 export default {
@@ -174,10 +174,29 @@ export default {
      */
     onHandleSubmit() {
       this.submitLoading = true
-      console.log(this.validate, this.tempValidate)
+      // console.log(this.validate)
+      peopleValidateRecord({ validateData: this.validate }).then(res => {
+        this.submitLoading = false
+
+        this.$message({
+          message: res.msg,
+          type: 'success'
+        })
+
+        this.$confirm('跳转会列表页？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.onHandleCancel()
+        }).catch(() => {
+        })
+      }).catch(() => {
+        this.submitLoading = false
+      })
     },
     /**
-     * 取消阅卷
+     * 取消阅卷,跳回列表页
      */
     onHandleCancel() {
       this.$router.push({ name: 'QuestionRecord' })

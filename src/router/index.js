@@ -135,6 +135,18 @@ export const constantRoutes = [
         name: 'QuestionRecord',
         component: () => import('@/views/QuestionRecord'),
         meta: { title: '刷题记录', icon: 'el-icon-s-release' }
+      },
+      {
+        path: 'recorddetail',
+        name: 'QuestionRecordDetail',
+        component: () => import('@/views/QuestionRecord/Detail/Detail'),
+        hidden: true
+      },
+      {
+        path: 'peoplevalidate',
+        name: 'PeopleValidate',
+        component: () => import('@/views/QuestionRecord/PeopleValidate/PeopleValidate'),
+        hidden: true
       }
     ]
   },

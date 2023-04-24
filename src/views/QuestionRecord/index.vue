@@ -26,9 +26,9 @@
         </el-form-item>
         <el-form-item label="排序方式">
           <el-select v-model="searchForm.sort" clearable placeholder="排序方式" @change="onHandleSearch">
-            <el-option value="create_time" label="试卷创建时间" />
-            <el-option value="submit_time" label="用户交卷时间" />
-            <el-option value="total_time" label="答题时长" />
+            <el-option label="试卷创建时间" value="create_time" />
+            <el-option label="用户交卷时间" value="submit_time" />
+            <el-option label="答题时长" value="total_time" />
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -149,9 +149,15 @@
           width="200"
         >
           <template slot-scope="scope">
-            <el-button icon="el-icon-view" size="mini" type="info">详情
+            <el-button icon="el-icon-view" size="mini" type="info" @click="onHandleGoToDetail(scope.row.id)">详情
             </el-button>
-            <el-button v-if="scope.row.is_submit === 1" icon="el-icon-edit" size="mini" type="primary">判卷
+            <el-button
+              v-if="scope.row.is_submit === 1"
+              icon="el-icon-edit"
+              size="mini"
+              type="primary"
+              @click="onHandleGoToPeopleValidate(scope.row.id)"
+            >判卷
             </el-button>
           </template>
         </el-table-column>
@@ -346,6 +352,16 @@ export default {
     async onHandleCurrentChange(page) {
       this.searchForm.page = page
       await this.getQuestionRecordData()
+    },
+    /**
+     * 前往详情页
+     * @param id
+     */
+    onHandleGoToDetail(id) {
+      this.$router.push({ name: 'QuestionRecordDetail', query: { id: id }})
+    },
+    onHandleGoToPeopleValidate(id) {
+      this.$router.push({ name: 'PeopleValidate', query: { id: id }})
     }
   }
 }

@@ -347,7 +347,7 @@ export default {
      * @param id
      */
     onHandleGoUser(id) {
-      this.$router.push({ name: 'AppletUser', params: { id: id }})
+      this.$router.push({ name: 'AppletUserIndex', params: { id: id }})
     },
     /**
      * 修改每页显示数量

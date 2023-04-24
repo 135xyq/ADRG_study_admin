@@ -139,9 +139,12 @@
         <el-table-column
           align="center"
           label="用户交卷时间"
-          prop="update_time"
           show-overflow-tooltip
-        />
+        >
+          <template slot-scope="scope">
+            {{ scope.row.is_submit === 0 ? '用户未完成' : scope.row.submit_time }}
+          </template>
+        </el-table-column>
         <el-table-column
           align="center"
           fixed="right"

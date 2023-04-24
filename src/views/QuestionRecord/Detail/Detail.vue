@@ -5,7 +5,7 @@
       <div class="detail">
         <div class="status item">
           试卷状态：
-          <el-tag v-if="recordInfo.is_submit === 1" type="success">已完成</el-tag>
+          <el-tag v-if="recordInfo.is_submit !== 0" type="success">已完成</el-tag>
           <el-tag v-if="recordInfo.is_submit === 0" type="danger">未完成</el-tag>
         </div>
         <div class="create-time item">
@@ -39,7 +39,7 @@
             <div
               v-for="(value, key) in item.question.options"
               :key="key"
-              :class="{right: item.question.answer.indexOf(key) !== -1,error:(recordInfo.is_submit === 1 && item.is_current === 0 && item.answer.indexOf(key) !==-1)}"
+              :class="{right: item.question.answer.indexOf(key) !== -1,error:(recordInfo.is_submit !== 0 && item.is_current === 0 && item.answer.indexOf(key) !==-1)}"
               class="option"
             >{{ key }}. {{ value }}
             </div>
@@ -50,7 +50,7 @@
               <div class="answer-content">{{ item.question.answer.join('') }}</div>
             </div>
             <div
-              v-if="recordInfo.is_submit === 1"
+              v-if="recordInfo.is_submit !== 0"
               :class="{right:item.is_current === 1,error:item.is_current === 0}"
               class="user-answer"
             >
@@ -65,7 +65,7 @@
             <div class="answer-content">{{ item.question.answer.join('') }}</div>
           </div>
           <div
-            v-if="recordInfo.is_submit === 1"
+            v-if="recordInfo.is_submit !== 0"
             :class="{right:item.is_current === 1,error:item.is_current === 0}"
             class="user-answer"
           >
@@ -73,7 +73,7 @@
             <div class="answer-content">{{ item.answer.join('') ? item.answer.join('') : '未作答' }}</div>
           </div>
         </div>
-        <div v-if="recordInfo.is_submit === 1" class="result">
+        <div v-if="recordInfo.is_submit !== 0" class="result">
           <div class="result-title">判题结果:</div>
           <div v-if="item.is_current === 1" class="result-content right"><i class="el-icon-check" /></div>
           <div v-if="item.is_current === 0" class="result-content error"><i class="el-icon-close" /></div>

@@ -20,8 +20,9 @@
         <el-form-item label="试卷的状态">
           <el-select v-model="searchForm.type" clearable placeholder="试卷的状态" @change="onHandleSearch">
             <el-option :value="-1" label="全部" />
-            <el-option :value="0" label="已完成" />
-            <el-option :value="1" label="未完成" />
+            <el-option :value="0" label="未完成" />
+            <el-option :value="1" label="未人工判卷" />
+            <el-option :value="2" label="已人工阅卷" />
           </el-select>
         </el-form-item>
         <el-form-item label="排序方式">
@@ -126,7 +127,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.is_submit === 1" type="success">已完成</el-tag>
+            <el-tag v-if="scope.row.is_submit !== 0" type="success">已完成</el-tag>
             <el-tag v-if="scope.row.is_submit === 0" type="danger">未完成</el-tag>
           </template>
         </el-table-column>
@@ -152,15 +153,23 @@
           width="200"
         >
           <template slot-scope="scope">
-            <el-button icon="el-icon-view" size="mini" type="info" @click="onHandleGoToDetail(scope.row.id)">详情
+            <el-button icon="el-icon-view" size="mini" type="primary" @click="onHandleGoToDetail(scope.row.id)">详情
             </el-button>
             <el-button
               v-if="scope.row.is_submit === 1"
               icon="el-icon-edit"
               size="mini"
-              type="primary"
+              type="success"
               @click="onHandleGoToPeopleValidate(scope.row.id)"
             >判卷
+            </el-button>
+            <el-button
+              v-if="scope.row.is_submit === 2"
+              icon="el-icon-edit-outline"
+              size="mini"
+              type="warning"
+              @click="onHandleGoToPeopleValidate(scope.row.id)"
+            >复判
             </el-button>
           </template>
         </el-table-column>

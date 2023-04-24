@@ -15,7 +15,7 @@
           出卷时间：{{ recordInfo.create_time }}
         </div>
         <div v-if="recordInfo.is_submit" class="submit-time item">
-          交卷时间：{{ recordInfo.update_time }}
+          交卷时间：{{ recordInfo.submit_time }}
         </div>
         <div v-if="recordInfo.is_submit" class="submit-time item">
           答题时长：{{ formateDate(recordInfo.total_time) }}

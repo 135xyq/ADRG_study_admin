@@ -28,7 +28,7 @@ import '@/permission' // permission control
 // Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
 Vue.use(ElementUI, {
-  size: 'mini' // set element-ui default size
+  size: 'medium' // set element-ui default size
 })
 
 // 使用markdown插件

@@ -11,3 +11,17 @@ export function formateDate(date) {
   return `${hour}时${minute}分${second}秒`
 }
 
+/**
+ * 格式化时间 Y-M-D
+ * @param time
+ * @returns {string}
+ */
+export function formateYearMonthDay(time) {
+  const date = new Date(time)
+  const year = date.getFullYear()
+  const month = date.getMonth()
+  const day = date.getDate()
+
+  return `${year}-${month + 1}-${day}`
+}
+

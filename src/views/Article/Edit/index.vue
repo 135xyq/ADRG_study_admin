@@ -36,7 +36,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="是否显示在的封面">
+      <el-form-item label="是否显示在封面">
         <el-switch
           v-model="formData.show_cover"
           :active-value="1"
@@ -222,6 +222,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.demo-ruleForm{
+  margin-top: 30px;
+}
 .avatar-uploader {
   .el-upload {
     border-radius: 6px;

@@ -294,6 +294,10 @@ export default {
     if (this.$route.params.category) {
       this.form.category = this.$route.params.category
     }
+    // 如果是从首页排行榜跳转
+    if (this.$route.params.id) {
+      this.form.title = this.$route.params.title
+    }
 
     await this.getCategoryList() // 获取分类列表
     await this.getQuestionData() // 获取分页数据

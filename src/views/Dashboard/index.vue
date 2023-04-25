@@ -88,7 +88,7 @@
               <tbody id="select1_tbody1" class="select1_box">
                 <tr v-for="(item, index) in videoTop" :key="item.id">
                   <td style="color:#fd0e3b;">{{ index + 1 }}</td>
-                  <td class="rank_tbody_td">{{ item.title }}</td>
+                  <td class="rank_tbody_td" @click="onHandleFromTopToPage('VideoDetail',item.id)">{{ item.title }}</td>
                   <td style="text-align:right;">{{ item.view_count }}</td>
                 </tr>
               </tbody>
@@ -114,7 +114,7 @@
                   :key="item.id"
                 >
                   <td style="color:#fd0e3b;">{{ index + 1 }}</td>
-                  <td class="rank_tbody_td">{{ item.title }}</td>
+                  <td class="rank_tbody_td" @click="onHandleFromTopToPage('ArticleDetail',item.id)">{{ item.title }}</td>
                   <td style="text-align:right;">{{ item.view_count }}</td>
                 </tr>
               </tbody>
@@ -137,7 +137,7 @@
               <tbody id="select1_tbody1" class="select1_box">
                 <tr v-for="(item, index) in questionTop" :key="item.id">
                   <td style="color:#fd0e3b;">{{ index + 1 }}</td>
-                  <td class="rank_tbody_td">{{ item.title }}</td>
+                  <td class="rank_tbody_td" @click="onHandleFromTopToPage('QuestionList',item.id)">{{ item.title }}</td>
                   <td style="text-align:right;">{{ item.test_count }}</td>
                 </tr>
               </tbody>
@@ -313,6 +313,14 @@ export default {
      */
     onHandleGoToPage(pageName) {
       this.$router.push({ name: pageName })
+    },
+    /**
+     * top跳转到指定的页面
+     * @param pageName
+     * @param id
+     */
+    onHandleFromTopToPage(pageName, id) {
+      this.$router.push({ name: pageName, params: { id: id }})
     }
   }
 }
@@ -489,6 +497,12 @@ export default {
       width: 65%;
       overflow: hidden;
       word-break: break-all;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+        color: #409EFF;
+      }
     }
   }
 

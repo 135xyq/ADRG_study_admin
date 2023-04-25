@@ -3,7 +3,7 @@
     <div class="count-container">
       <el-row :gutter="40" class="panel-group">
         <el-col class="card-panel-col">
-          <div class="card-panel">
+          <div class="card-panel" @click="onHandleGoToPage('AppletUserIndex')">
             <div class="card-panel-icon-wrapper icon-user">
               <i class="card-panel-icon el-icon-user-solid" />
             </div>
@@ -16,7 +16,7 @@
           </div>
         </el-col>
         <el-col class="card-panel-col">
-          <div class="card-panel">
+          <div class="card-panel" @click="onHandleGoToPage('Video')">
             <div class="card-panel-icon-wrapper icon-video">
               <i class="card-panel-icon el-icon-video-camera-solid" />
             </div>
@@ -29,7 +29,7 @@
           </div>
         </el-col>
         <el-col class="card-panel-col">
-          <div class="card-panel">
+          <div class="card-panel" @click="onHandleGoToPage('ArticleList')">
             <div class="card-panel-icon-wrapper icon-video">
               <i class="card-panel-icon el-icon-tickets" />
             </div>
@@ -42,7 +42,7 @@
           </div>
         </el-col>
         <el-col class="card-panel-col">
-          <div class="card-panel">
+          <div class="card-panel" @click="onHandleGoToPage('QuestionList')">
             <div class="card-panel-icon-wrapper icon-question">
               <i class="card-panel-icon el-icon-question" />
             </div>
@@ -55,7 +55,7 @@
           </div>
         </el-col>
         <el-col class="card-panel-col">
-          <div class="card-panel">
+          <div class="card-panel" @click="onHandleGoToPage('FeedbackList')">
             <div class="card-panel-icon-wrapper icon-question">
               <i class="card-panel-icon el-icon-s-promotion" />
             </div>
@@ -306,6 +306,13 @@ export default {
 
         this.fullscreenLoading = false
       })
+    },
+    /**
+     * 前往指定的页面
+     * @param pageName
+     */
+    onHandleGoToPage(pageName) {
+      this.$router.push({ name: pageName })
     }
   }
 }

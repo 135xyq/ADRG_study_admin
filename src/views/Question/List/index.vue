@@ -291,11 +291,12 @@ export default {
   },
   async created() {
     // 如果是从指定分类跳转过来
-    if (this.$route.params.id) {
-      this.form.category = this.$route.params.id
+    if (this.$route.params.category) {
+      this.form.category = this.$route.params.category
     }
-    await this.getQuestionData() // 获取分页数据
+
     await this.getCategoryList() // 获取分类列表
+    await this.getQuestionData() // 获取分页数据
   },
   methods: {
     formateDate,

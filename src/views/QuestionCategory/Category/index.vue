@@ -227,7 +227,7 @@ export default {
      * @param id 分类id
      */
     onHandleGoToQuestion(id) {
-      this.$router.push({ name: 'QuestionList', params: { id: id }})
+      this.$router.push({ name: 'QuestionList', params: { category: id }})
     },
     /**
      * 跳转至刷题记录页

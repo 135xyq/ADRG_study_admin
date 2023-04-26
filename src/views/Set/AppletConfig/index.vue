@@ -40,8 +40,8 @@
       <el-form-item label="敏感词(包含将无法通过审核)：">
         <el-col :span="12">
           <el-tag
-            v-for="tag in configData.sensitive_words"
-            :key="tag"
+            v-for="(tag, index) in configData.sensitive_words"
+            :key="index"
             closable
             :disable-transitions="false"
             @close="handleClose(tag)"

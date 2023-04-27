@@ -334,7 +334,7 @@ export default {
         this.$router.push({ name: 'ArticleDetail', query: { articleId: id }})
       }
       if (type === 'video') {
-        this.$router.push({ name: 'VideoDetail', params: { id: id }})
+        this.$router.push({ name: 'VideoDetail', query: { videoId: id }})
       }
     },
     /**

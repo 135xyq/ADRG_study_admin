@@ -451,7 +451,7 @@ export default {
      * @param id
      */
     onHandleShowDetail(id) {
-      this.$router.push({ name: 'VideoDetail', params: { id: id }})
+      this.$router.push({ name: 'VideoDetail', query: { videoId: id }})
     },
     /**
      * 直接修改状态或展示在封面

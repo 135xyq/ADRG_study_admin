@@ -37,10 +37,10 @@ export default {
     }
   },
   async created() {
-    if (JSON.stringify(this.$route.params) !== '{}') {
-      this.videoId = this.$route.params.id
+    if (this.$route.query.videoId) {
+      this.videoId = this.$route.query.videoId
     }
-    // 视频id为空则调回文章列表
+    // 视频id为空则返回视频列表
     if (this.videoId === '') {
       this.$router.push({ name: 'VideoList' })
     } else {

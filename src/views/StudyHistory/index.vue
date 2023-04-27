@@ -89,7 +89,7 @@
         />
         <el-table-column
           align="center"
-          label="资源种类"
+          label="资源类型"
           show-overflow-tooltip
         >
           <template slot-scope="scope">

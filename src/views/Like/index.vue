@@ -77,7 +77,7 @@
         </el-table-column>
         <el-table-column
           align="center"
-          label="资源种类"
+          label="资源类型"
           width="100"
           show-overflow-tooltip
         >

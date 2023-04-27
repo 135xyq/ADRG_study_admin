@@ -88,7 +88,10 @@
               <tbody id="select1_tbody1" class="select1_box">
                 <tr v-for="(item, index) in videoTop" :key="item.id">
                   <td style="color:#fd0e3b;">{{ index + 1 }}</td>
-                  <td class="rank_tbody_td" @click="onHandleFromTopToPage('VideoDetail',item.id)">{{ item.title }}</td>
+                  <td class="rank_tbody_td" @click="onHandleFromTopToPage('VideoDetail',item.id,'videoId')">{{
+                    item.title
+                  }}
+                  </td>
                   <td style="text-align:right;">{{ item.view_count }}</td>
                 </tr>
               </tbody>
@@ -114,7 +117,9 @@
                   :key="item.id"
                 >
                   <td style="color:#fd0e3b;">{{ index + 1 }}</td>
-                  <td class="rank_tbody_td" @click="onHandleFromTopToPage('ArticleDetail',item.id)">{{ item.title }}</td>
+                  <td class="rank_tbody_td" @click="onHandleFromTopToPage('ArticleDetail',item.id,'articleId')">
+                    {{ item.title }}
+                  </td>
                   <td style="text-align:right;">{{ item.view_count }}</td>
                 </tr>
               </tbody>
@@ -137,7 +142,9 @@
               <tbody id="select1_tbody1" class="select1_box">
                 <tr v-for="(item, index) in questionTop" :key="item.id">
                   <td style="color:#fd0e3b;">{{ index + 1 }}</td>
-                  <td class="rank_tbody_td" @click="onHandleFromTopToPage('QuestionList',item.id,item.title)">{{ item.title }}</td>
+                  <td class="rank_tbody_td" @click="onHandleFromTopToPage('QuestionList',item.id,'id',item.title)">
+                    {{ item.title }}
+                  </td>
                   <td style="text-align:right;">{{ item.test_count }}</td>
                 </tr>
               </tbody>
@@ -318,10 +325,15 @@ export default {
      * top跳转到指定的页面
      * @param pageName
      * @param id
+     * @param name
      * @param title
      */
-    onHandleFromTopToPage(pageName, id, title = '') {
-      this.$router.push({ name: pageName, params: { id: id, title: title }})
+    onHandleFromTopToPage(pageName, id, name, title = '') {
+      if (title === '') {
+        this.$router.push({ name: pageName, query: { [name]: id }})
+      } else {
+        this.$router.push({ name: pageName, params: { [name]: id, title: title }})
+      }
     }
   }
 }

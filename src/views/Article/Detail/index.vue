@@ -1,8 +1,22 @@
 <template>
   <div class="article-detail-contsiner">
-    <h1>{{ article.title }}</h1>
+    <h1 class="title">{{ article.title }}</h1>
+    <div class="info">
+      <div class="item">
+        观看次数：{{ article.view_count }}
+      </div>
+      <div class="item" @click="onHandleGoToPage('StarList')">
+        <el-link :style="{fontSize:'18px'}">收藏数：{{ article.star_count }}</el-link>
+      </div>
+      <div class="item" @click="onHandleGoToPage('LikeList')">
+        <el-link :style="{fontSize:'18px'}">点赞数：{{ article.like_count }}</el-link>
+      </div>
+      <div class="item" @click="onHandleGoToPage('CommentList')">
+        <el-link :style="{fontSize:'18px'}">评论数：{{ article.comment_count }}</el-link>
+      </div>
+    </div>
     <hr>
-    <div v-html="articleContent" />
+    <div class="content" v-html="articleContent" />
   </div>
 </template>
 
@@ -50,6 +64,13 @@ export default {
       // 实例化
       const md = new MarkdownIt()
       this.articleContent = md.render(this.article.content)
+    },
+    /**
+     * 前往指定页
+     * @param pageName
+     */
+    onHandleGoToPage(pageName) {
+      this.$router.push({ name: pageName, params: { articleId: this.articleId }})
     }
   }
 }
@@ -58,5 +79,30 @@ export default {
 <style lang="scss" scoped>
 .article-detail-contsiner {
   margin: 30px 20px;
+  .title {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .info {
+    display: flex;
+    justify-content: center;
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #606266;
+
+    .item {
+      margin: 0 10px;
+    }
+  }
+
+  .description {
+    padding: 5px 20px;
+    color: #333;
+  }
+
+  .content{
+    padding: 20px;
+  }
 }
 </style>

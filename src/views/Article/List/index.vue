@@ -199,9 +199,9 @@
         >
           <template slot-scope="scope">
             <el-row class="el-row">
-              <el-button icon="el-icon-edit" size="mini" type="primary" @click="onHandleEdit(scope.row)">编辑文章
+              <el-button icon="el-icon-edit" size="mini" type="primary" @click="onHandleEdit(scope.row)">文章编辑
               </el-button>
-              <el-button icon="el-icon-view" size="mini" type="info" @click="onHandleShowDetail(scope.row.id)">详情文章
+              <el-button icon="el-icon-view" size="mini" type="info" @click="onHandleShowDetail(scope.row.id)">文章详情
               </el-button>
             </el-row>
             <el-row class="el-row">

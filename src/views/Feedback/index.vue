@@ -282,20 +282,7 @@ export default {
       })
     },
     /**
-     * 跳转到文章或视频页
-     * @param type
-     * @param id
-     */
-    onHandleGoToSource(type, id) {
-      if (type === 'article') {
-        this.$router.push({ name: 'ArticleDetail', params: { id: id }})
-      }
-      if (type === 'video') {
-        this.$router.push({ name: 'VideoDetail', params: { id: id }})
-      }
-    },
-    /**
-     * 取消审核
+     * 取消回复
      */
     onHandleCloseDialog() {
       this.responseForm = {

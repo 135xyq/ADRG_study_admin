@@ -37,8 +37,9 @@ export default {
     }
   },
   async created() {
-    if (JSON.stringify(this.$route.params) !== '{}') {
-      this.articleId = this.$route.params.id
+    // console.log(this.$route.query, JSON.stringify(this.$route.query))
+    if (JSON.stringify(this.$route.query) !== '{}') {
+      this.articleId = this.$route.query.articleId
     }
     // 文章id为空则调回文章列表
     if (this.articleId === '') {
@@ -57,7 +58,7 @@ export default {
       const res = await articleDetail({ id: this.articleId })
       this.article = res.data
 
-      console.log(this.article)
+      // console.log(this.article)
     },
     // 将markdown转为html
     mdToHtml() {

@@ -427,7 +427,7 @@ export default {
      * @param id
      */
     onHandleShowDetail(id) {
-      this.$router.push({ name: 'ArticleDetail', params: { id: id }})
+      this.$router.push({ name: 'ArticleDetail', query: { articleId: id }})
     },
     /**
      * 直接修改状态或展示在封面
@@ -446,7 +446,7 @@ export default {
       await this.getArticleData()
     },
     /**
-     * 跳转到视频的评论、点赞、收藏等页面
+     * 跳转到文章的评论、点赞、收藏等页面
      * @param id
      * @param routeName
      */

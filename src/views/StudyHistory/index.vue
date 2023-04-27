@@ -251,7 +251,7 @@ export default {
      */
     onHandleGoToSource(type, id) {
       if (type === 'article') {
-        this.$router.push({ name: 'ArticleDetail', params: { id: id }})
+        this.$router.push({ name: 'ArticleDetail', query: { articleId: id }})
       }
       if (type === 'video') {
         this.$router.push({ name: 'VideoDetail', params: { id: id }})

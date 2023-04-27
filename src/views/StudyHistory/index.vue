@@ -22,7 +22,6 @@
           <el-select v-model="searchForm.type" clearable placeholder="资源类型" @change="onHandleSearch">
             <el-option :value="1" label="视频" />
             <el-option :value="2" label="文章" />
-            <el-option :value="3" label="帖子" />
           </el-select>
         </el-form-item>
         <el-form-item label="排序方式">
@@ -79,9 +78,6 @@
             </el-link>
             <el-link v-if="scope.row.type === 2" @click="onHandleGoToSource('article',scope.row.article_id)">
               {{ scope.row.article.title }}
-            </el-link>
-            <el-link v-if="scope.row.type === 3" @click="onHandleGoToSource('article',scope.row.article_id)">
-              {{ }}
             </el-link>
           </template>
         </el-table-column>

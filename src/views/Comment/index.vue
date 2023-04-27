@@ -28,6 +28,13 @@
         <el-form-item label="文章id">
           <el-input v-model="searchForm.article" clearable placeholder="文章id" />
         </el-form-item>
+        <el-form-item label="资源类型">
+          <el-select v-model="searchForm.type" clearable placeholder="资源类型" @change="onHandleSearch">
+            <el-option value="all" label="全部" />
+            <el-option value="video" label="视频" />
+            <el-option value="article" label="文章" />
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button icon="el-icon-search" type="primary" @click="onHandleSubmit">查询</el-button>
           <el-button icon="el-icon-refresh" @click="onHandleReset">重置</el-button>
@@ -77,6 +84,17 @@
             <el-link v-if="scope.row.article_id" @click="onHandleGoToSource('article',scope.row.article_id)">
               {{ scope.row.article.title }}
             </el-link>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="资源类型"
+          width="100"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.video_id" size="medium" type="waring">视频</el-tag>
+            <el-tag v-if="scope.row.article_id" size="medium" type="success">文章</el-tag>
           </template>
         </el-table-column>
         <el-table-column
@@ -189,7 +207,8 @@ export default {
         keyword: '',
         article: '',
         video: '',
-        userName: ''
+        userName: '',
+        type: 'all'
       }, // 查找数据
       total: 0, // 数据总量
       deleteIds: [], // 要删除评论的列表
@@ -296,7 +315,8 @@ export default {
         status: '',
         userName: '',
         video: '',
-        article: ''
+        article: '',
+        type: 'all'
       }
       await this.getCommentData()
     },

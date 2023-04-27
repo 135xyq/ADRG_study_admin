@@ -18,6 +18,13 @@
         <el-form-item label="文章id">
           <el-input v-model="searchForm.article" clearable placeholder="文章id" />
         </el-form-item>
+        <el-form-item label="资源类型">
+          <el-select v-model="searchForm.type" clearable placeholder="资源类型" @change="onHandleSearch">
+            <el-option value="all" label="全部" />
+            <el-option value="video" label="视频" />
+            <el-option value="article" label="文章" />
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button icon="el-icon-search" type="primary" @click="onHandleSearch">查询
           </el-button>
@@ -36,7 +43,7 @@
       <el-table
         ref="multipleTable"
         v-loading="loading"
-        :data="commentData"
+        :data="starData"
         :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
         border
         stripe
@@ -70,14 +77,27 @@
         </el-table-column>
         <el-table-column
           align="center"
+          label="资源种类"
+          width="100"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.video_id" size="medium" type="waring">视频</el-tag>
+            <el-tag v-if="scope.row.article_id" size="medium" type="success">文章</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
           label="收藏用户"
           prop="user.nick_name"
+          width="200"
           show-overflow-tooltip
         />
         <el-table-column
           align="center"
           label="收藏时间"
           prop="create_time"
+          width="200"
           show-overflow-tooltip
         />
       </el-table>
@@ -103,16 +123,17 @@ import { deleteStar, getStarPage } from '@/api/star'
 import { getAppletUserList } from '@/api/appletUser'
 
 export default {
-  name: 'Like',
+  name: 'Star',
   data() {
     return {
-      commentData: [], // 表格数据
+      starData: [], // 表格数据
       searchForm: {
         page: 1,
         limit: 20,
         article: '',
         video: '',
-        userName: ''
+        userName: '',
+        type: 'all'
       }, // 查找数据
       total: 0, // 数据总量
       deleteIds: [], // 要删除收藏的列表
@@ -143,7 +164,7 @@ export default {
 
       const res = await getStarPage(this.searchForm)
       this.total = res.data.total
-      this.commentData = res.data.data
+      this.starData = res.data.data
 
       this.loading = false
     },
@@ -237,7 +258,10 @@ export default {
       this.searchForm = {
         article: '',
         video: '',
-        userName: ''
+        userName: '',
+        type: 'all',
+        page: 1,
+        limit: 20
       }
 
       this.getStartData()

@@ -38,7 +38,7 @@ export default {
   },
   async created() {
     // console.log(this.$route.query, JSON.stringify(this.$route.query))
-    if (JSON.stringify(this.$route.query) !== '{}') {
+    if (this.$route.query.articleId) {
       this.articleId = this.$route.query.articleId
     }
     // 文章id为空则调回文章列表

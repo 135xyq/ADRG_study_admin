@@ -1,5 +1,9 @@
 <template>
-  <div class="applet-config-container">
+  <div v-loading="loading" class="applet-config-container">
+    <div class="down-container">
+      <el-button class="el-icon-upload2" type="primary" size="small" @click="handleDownload"> 导入敏感词</el-button>
+      <el-button class="el-icon-download" type="primary" size="small" @click="handleDownload"> 导出敏感词</el-button>
+    </div>
     <el-form ref="form" :model="configData" label-width="210px" size="medium">
       <el-form-item label="微信小程序Appid：">
         <el-col :span="12">
@@ -15,11 +19,11 @@
         <el-col :span="12">
           <el-switch
             v-model="configData.is_auto_check_comment"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
             :active-value="1"
             :inactive-value="0"
+            active-color="#13ce66"
             active-text="开启自动审核"
+            inactive-color="#ff4949"
             inactive-text="只能人工审核"
           />
         </el-col>
@@ -28,11 +32,11 @@
         <el-col :span="12">
           <el-switch
             v-model="configData.is_auto_check_user_name"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
             :active-value="1"
             :inactive-value="0"
+            active-color="#13ce66"
             active-text="开启自动审核"
+            inactive-color="#ff4949"
             inactive-text="只能人工审核"
           />
         </el-col>
@@ -42,8 +46,8 @@
           <el-tag
             v-for="(tag, index) in configData.sensitive_words"
             :key="index"
-            closable
             :disable-transitions="false"
+            closable
             @close="handleClose(tag)"
           >
             {{ tag }}
@@ -54,8 +58,8 @@
             v-model="inputValue"
             class="input-new-tag"
             size="small"
-            @keyup.enter.native="handleInputConfirm"
             @blur="handleInputConfirm"
+            @keyup.enter.native="handleInputConfirm"
           />
           <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
         </el-col>
@@ -70,6 +74,7 @@
 <script>
 // 小程序配置页面
 import { addConfig, getConfig, updateConfig } from '@/api/config'
+import XLSX from 'xlsx'
 
 export default {
   name: 'AppletConfig',
@@ -82,6 +87,7 @@ export default {
         is_auto_check_comment: 0,
         sensitive_words: []
       },
+      loading: false,
       inputVisible: false,
       inputValue: '',
       id: '', // 配置信息的id
@@ -94,6 +100,8 @@ export default {
   methods: {
     // 获取小程序配置信息
     async getConfigData() {
+      this.loading = true
+
       const res = await getConfig()
       // 返回值为空对象，没有配置信息，新增一个配置对象
       if (JSON.stringify(res.data) === '{}') {
@@ -108,6 +116,8 @@ export default {
 
         this.isEdit = true
       }
+
+      this.loading = false
     },
     async onSubmit() {
       // 修改配置对象
@@ -150,6 +160,23 @@ export default {
       }
       this.inputVisible = false
       this.inputValue = ''
+    },
+    /**
+     * 导出敏感词
+     */
+    handleDownload() {
+      // 表格配置
+      const options = {
+        '!cols': [
+          { wpx: 100 }
+        ]
+      }
+      const data = this.configData.sensitive_words.map(item => [item])
+      const worksheet = XLSX.utils.aoa_to_sheet(data, { header: ['name'] })
+      worksheet['!cols'] = options['!cols'] // 设置每列的列宽
+      const workbook = XLSX.utils.book_new()
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1')
+      XLSX.writeFile(workbook, '敏感词.xlsx')
     }
   }
 }
@@ -159,9 +186,17 @@ export default {
 .applet-config-container {
   margin-top: 20px;
 
+  .down-container{
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: left;
+    margin-left: 50px;
+  }
+
   .el-tag + .el-tag {
     margin-left: 10px;
   }
+
   .button-new-tag {
     margin-left: 10px;
     height: 32px;
@@ -169,6 +204,7 @@ export default {
     padding-top: 0;
     padding-bottom: 0;
   }
+
   .input-new-tag {
     width: 90px;
     margin-left: 10px;

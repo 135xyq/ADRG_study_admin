@@ -22,6 +22,13 @@
           <el-button icon="el-icon-search" type="primary" @click="onHandleSearch">查询
           </el-button>
         </el-form-item>
+        <el-form-item label="资源类型">
+          <el-select v-model="searchForm.type" clearable placeholder="资源类型" @change="onHandleSearch">
+            <el-option value="all" label="全部" />
+            <el-option value="video" label="视频" />
+            <el-option value="article" label="文章" />
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button icon="el-icon-refresh" @click="onHnadleReset">重置
           </el-button>
@@ -70,14 +77,27 @@
         </el-table-column>
         <el-table-column
           align="center"
+          label="资源种类"
+          width="100"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.video_id" size="medium" type="waring">视频</el-tag>
+            <el-tag v-if="scope.row.article_id" size="medium" type="success">文章</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
           label="点赞用户"
           prop="user.nick_name"
+          width="200"
           show-overflow-tooltip
         />
         <el-table-column
           align="center"
           label="点赞时间"
           prop="create_time"
+          width="200"
           show-overflow-tooltip
         />
       </el-table>
@@ -112,7 +132,8 @@ export default {
         limit: 20,
         article: '',
         video: '',
-        userName: ''
+        userName: '',
+        type: 'all'
       }, // 查找数据
       total: 0, // 数据总量
       deleteIds: [], // 要删除点赞的列表
@@ -238,7 +259,10 @@ export default {
       this.searchForm = {
         article: '',
         video: '',
-        userName: ''
+        userName: '',
+        type: 'all',
+        page: 1,
+        limit: 20
       }
 
       this.getLiketData()

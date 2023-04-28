@@ -20,19 +20,19 @@
         </el-form-item>
         <el-form-item label="资源类型">
           <el-select v-model="searchForm.type" clearable placeholder="资源类型" @change="onHandleSearch">
-            <el-option value="all" label="全部" />
-            <el-option value="video" label="视频" />
-            <el-option value="article" label="文章" />
+            <el-option label="全部" value="all" />
+            <el-option label="视频" value="video" />
+            <el-option label="文章" value="article" />
           </el-select>
         </el-form-item>
         <el-form-item>
           <el-date-picker
             v-model="searchForm.time"
+            :default-time="['00:00:00', '23:59:59']"
             end-placeholder="结束日期"
             range-separator="至"
             start-placeholder="开始日期"
             type="daterange"
-            :default-time="['00:00:00', '23:59:59']"
             @change="onHandleSearch"
           />
         </el-form-item>
@@ -55,10 +55,10 @@
         ref="multipleTable"
         v-loading="loading"
         :data="commentData"
+        :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
         border
         stripe
         style="width: 100%"
-        :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
         tooltip-effect="dark"
         @selection-change="onHandleSelectionChange"
       >
@@ -89,8 +89,8 @@
         <el-table-column
           align="center"
           label="资源类型"
-          width="100"
           show-overflow-tooltip
+          width="100"
         >
           <template slot-scope="scope">
             <el-tag v-if="scope.row.video_id" size="medium" type="waring">视频</el-tag>
@@ -101,15 +101,15 @@
           align="center"
           label="点赞用户"
           prop="user.nick_name"
-          width="200"
           show-overflow-tooltip
+          width="200"
         />
         <el-table-column
           align="center"
           label="点赞时间"
           prop="create_time"
-          width="200"
           show-overflow-tooltip
+          width="200"
         />
       </el-table>
     </div>
@@ -130,7 +130,7 @@
 <script>
 // 点赞列表
 
-import { getLikePage, deleteLike } from '@/api/like'
+import { deleteLike, getLikePage } from '@/api/like'
 import { getAppletUserList } from '@/api/appletUser'
 
 export default {
@@ -153,8 +153,7 @@ export default {
 
     }
   },
-  computed: {
-  },
+  computed: {},
   async created() {
     // 接收传来的参数
     if (this.$route.params.id) {
@@ -163,6 +162,11 @@ export default {
       } else if (this.$route.params.type === 'video') {
         this.searchForm.video = this.$route.params.id
       }
+    }
+
+    // 接收传来的用户id
+    if (this.$route.params.userId) {
+      this.searchForm.userName = this.$route.params.userId
     }
 
     await this.getLiketData()

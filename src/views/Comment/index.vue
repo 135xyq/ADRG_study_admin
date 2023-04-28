@@ -36,6 +36,17 @@
           </el-select>
         </el-form-item>
         <el-form-item>
+          <el-date-picker
+            v-model="searchForm.time"
+            end-placeholder="结束日期"
+            range-separator="至"
+            start-placeholder="开始日期"
+            type="daterange"
+            :default-time="['00:00:00', '23:59:59']"
+            @change="onHandleSubmit"
+          />
+        </el-form-item>
+        <el-form-item>
           <el-button icon="el-icon-search" type="primary" @click="onHandleSubmit">查询</el-button>
           <el-button icon="el-icon-refresh" @click="onHandleReset">重置</el-button>
           <el-button :disabled="deleteIds.length === 0" icon="el-icon-delete" type="danger" @click="onHandleDelete">删除
@@ -208,7 +219,8 @@ export default {
         article: '',
         video: '',
         userName: '',
-        type: 'all'
+        type: 'all',
+        time: []
       }, // 查找数据
       total: 0, // 数据总量
       deleteIds: [], // 要删除评论的列表
@@ -316,7 +328,8 @@ export default {
         userName: '',
         video: '',
         article: '',
-        type: 'all'
+        type: 'all',
+        time: []
       }
       await this.getCommentData()
     },

@@ -270,10 +270,20 @@ export default {
   methods: {
     /**
      * 获取评论列表
+     * @param isPage
      * @returns {Promise<void>}
      */
-    async getCommentData() {
+    async getCommentData(isPage = false) {
       this.loading = true
+
+      // 如果不是更改页码，则需要将分页数据重置
+      if (!isPage) {
+        this.searchForm = {
+          ...this.searchForm,
+          page: 1,
+          limit: 20
+        }
+      }
 
       const res = await getCommentPage(this.searchForm)
       this.total = res.data.total
@@ -304,7 +314,7 @@ export default {
      */
     async onHandleSizeChange(limit) {
       this.searchForm.limit = limit
-      await this.getCommentData()
+      await this.getCommentData(true)
     },
     /**
      * 修改当前页码数
@@ -312,7 +322,7 @@ export default {
      */
     async onHandleCurrentChange(page) {
       this.searchForm.page = page
-      await this.getCommentData()
+      await this.getCommentData(true)
     },
     /**
      * 数据查询

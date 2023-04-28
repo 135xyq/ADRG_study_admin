@@ -260,6 +260,11 @@ export default {
       }
     }
 
+    // 接收传来的用户名
+    if (this.$route.params.userId) {
+      this.searchForm.userName = this.$route.params.userId
+    }
+
     await this.getCommentData()
   },
   methods: {

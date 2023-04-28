@@ -266,10 +266,21 @@ export default {
     },
     /**
      * 获取记录列表
+     * @param isPage
      * @returns {Promise<void>}
      */
-    async getQuestionRecordData() {
+    async getQuestionRecordData(isPage = false) {
       this.loading = true
+
+      // 如果不是更改页码，则需要将分页数据重置
+      if (!isPage) {
+        this.searchForm = {
+          ...this.searchForm,
+          page: 1,
+          limit: 20
+        }
+      }
+
       const res = await getQuestionRecordPage(this.searchForm)
 
       if (res.code === 0) {
@@ -360,7 +371,7 @@ export default {
      */
     async onHandleSizeChange(limit) {
       this.searchForm.limit = limit
-      await this.getQuestionRecordData()
+      await this.getQuestionRecordData(true)
     },
     /**
      * 修改当前页码数
@@ -368,7 +379,7 @@ export default {
      */
     async onHandleCurrentChange(page) {
       this.searchForm.page = page
-      await this.getQuestionRecordData()
+      await this.getQuestionRecordData(true)
     },
     /**
      * 前往详情页

@@ -125,12 +125,36 @@
         >
           <template slot-scope="scope">
             <el-row>
-              <el-button class="el-icon-s-comment" size="mini" type="primary" @click="onHandleToPage('CommentList',scope.row.nick_name)">评论列表</el-button>
-              <el-button class="el-icon-star-on" size="mini" type="success" @click="onHandleToPage('StarList',scope.row.nick_name)">收藏列表</el-button>
+              <el-button
+                class="el-icon-s-comment"
+                size="mini"
+                type="primary"
+                @click="onHandleToPage('CommentList',scope.row.nick_name)"
+              >评论列表
+              </el-button>
+              <el-button
+                class="el-icon-star-on"
+                size="mini"
+                type="success"
+                @click="onHandleToPage('StarList',scope.row.nick_name)"
+              >收藏列表
+              </el-button>
             </el-row>
             <el-row style="margin-top: 10px">
-              <el-button class="el-icon-s-release" size="mini" type="info" @click="onHandleToPage('QuestionRecord',scope.row.nick_name)">做题记录</el-button>
-              <el-button class="el-icon-thumb" size="mini" type="warning" @click="onHandleToPage('LikeList',scope.row.nick_name)">点赞列表</el-button>
+              <el-button
+                class="el-icon-s-release"
+                size="mini"
+                type="info"
+                @click="onHandleToPage('QuestionRecord',scope.row.nick_name)"
+              >做题记录
+              </el-button>
+              <el-button
+                class="el-icon-thumb"
+                size="mini"
+                type="warning"
+                @click="onHandleToPage('LikeList',scope.row.nick_name)"
+              >点赞列表
+              </el-button>
             </el-row>
           </template>
         </el-table-column>
@@ -189,9 +213,19 @@ export default {
   methods: {
     /**
      * 获取表格数据
+     * @param isPage
      * @returns {Promise<void>}
      */
-    async getAppletUserData() {
+    async getAppletUserData(isPage = false) {
+      // 如果不是更改页码，则需要将分页数据重置
+      if (!isPage) {
+        this.form = {
+          ...this.form,
+          page: 1,
+          limit: 20
+        }
+      }
+
       this.loading = true
 
       const res = await getAppletUsers(this.form)
@@ -206,7 +240,7 @@ export default {
      */
     async onHandleSizeChange(limit) {
       this.form.limit = limit
-      await this.getAppletUserData()
+      await this.getAppletUserData(true)
     },
     /**
      * 修改当前页码数
@@ -214,7 +248,7 @@ export default {
      */
     async onHandleCurrentChange(page) {
       this.form.page = page
-      await this.getAppletUserData()
+      await this.getAppletUserData(true)
     },
     /**
      * 确认查询数据

@@ -65,13 +65,15 @@ export default {
   },
   watch: {
     // 获取视频的详细信息
-    videoData: {
+    'videoData': {
       handler(newVal, oldVal) {
         this.videoForm = {
           url: newVal.url,
           duration: newVal.duration,
           fileSize: newVal.fileSize
         }
+
+        // console.log('Upload', this.videoData)
       },
       deep: true
     }

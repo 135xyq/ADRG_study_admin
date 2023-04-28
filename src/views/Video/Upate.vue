@@ -125,12 +125,13 @@ export default {
       if (JSON.stringify(newVal) !== '{}') {
         this.$nextTick(() => {
           this.form = { ...newVal }
-
           this.videoData.url = newVal.url
           this.videoData.duration = newVal.duration
           this.videoData.fileSize = newVal.file_size
         })
       }
+
+      // console.log(this.videoData)
     }
   },
   async created() {
@@ -141,7 +142,11 @@ export default {
      * 数据初始化
      */
     initData() {
-      this.videoData = {}
+      this.videoData = {
+        url: '',
+        duration: 0,
+        fileSize: 0
+      }
       this.form = {
         title: '',
         description: '',

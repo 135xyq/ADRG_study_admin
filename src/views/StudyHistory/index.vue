@@ -182,10 +182,20 @@ export default {
     formateDate,
     /**
      * 获取学习历史记录列表
+     * @param isPage
      * @returns {Promise<void>}
      */
-    async getHistoryData() {
+    async getHistoryData(isPage = false) {
       this.loading = true
+
+      // 如果不是更改页码，则需要将分页数据重置
+      if (!isPage) {
+        this.searchForm = {
+          ...this.searchForm,
+          page: 1,
+          limit: 20
+        }
+      }
 
       const res = await getHistoryPage(this.searchForm)
       this.total = res.data.total
@@ -206,7 +216,7 @@ export default {
      */
     async onHandleSizeChange(limit) {
       this.searchForm.limit = limit
-      await this.getHistoryData()
+      await this.getHistoryData(true)
     },
     /**
      * 修改当前页码数
@@ -214,7 +224,7 @@ export default {
      */
     async onHandleCurrentChange(page) {
       this.searchForm.page = page
-      await this.getHistoryData()
+      await this.getHistoryData(true)
     },
     /**
      * 批量删除学习历史记录信息

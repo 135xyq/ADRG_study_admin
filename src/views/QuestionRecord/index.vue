@@ -4,7 +4,7 @@
       <el-form :inline="true" :model="searchForm" class="demo-form-inline" size="mini">
         <el-form-item label="用户">
           <el-autocomplete
-            v-model="searchForm.userName"
+            v-model="searchForm.user"
             :fetch-suggestions="querySearchAsync"
             :trigger-on-focus="false"
             class="inline-input"
@@ -219,6 +219,11 @@ export default {
     }
   },
   async created() {
+    // 接收传来的用户名
+    if (this.$route.params.userId) {
+      this.searchForm.user = this.$route.params.userId
+    }
+
     // 获取题目分类列表
     await this.getQuestionCategoryList()
 

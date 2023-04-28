@@ -164,6 +164,11 @@ export default {
       }
     }
 
+    // 接收传来的用户id
+    if (this.$route.params.userId) {
+      this.searchForm.userName = this.$route.params.userId
+    }
+
     await this.getStartData()
   },
   methods: {

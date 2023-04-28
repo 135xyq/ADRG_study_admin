@@ -12,6 +12,7 @@
             range-separator="至"
             start-placeholder="开始日期"
             type="datetimerange"
+            @change="onHandleSubmit"
           />
         </el-form-item>
         <el-form-item>

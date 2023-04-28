@@ -70,11 +70,16 @@
           width="110"
         >
           <template slot-scope="scope">
-            <el-image
-              :preview-src-list="[scope.row.image]"
-              :src="scope.row.image"
-              style="width: 100px; height: 100px"
-            />
+            <div v-if="scope.row.image">
+              <el-image
+                :preview-src-list="[scope.row.image]"
+                :src="scope.row.image"
+                style="width: 100px; height: 100px"
+              />
+            </div>
+            <div v-else>
+              无图片信息
+            </div>
           </template>
         </el-table-column>
         <el-table-column

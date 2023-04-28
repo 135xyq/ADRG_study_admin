@@ -59,7 +59,49 @@
         <el-table-column
           align="center"
           label="试卷出题数"
-          prop="question_count"
+          prop="userSet.question_count"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="center"
+          label="试卷出题难度"
+          show-overflow-tooltip
+        >
+          <template v-if="scope.row.userSet" slot-scope="scope">
+            <el-tag v-if="scope.row.userSet.level === 0" type="success">简单</el-tag>
+            <el-tag v-if="scope.row.userSet.level === 1" type="warning">中等</el-tag>
+            <el-tag v-if="scope.row.userSet.level === 2" type="danger">困难</el-tag>
+            <el-tag v-if="scope.row.userSet.level === 3" type="info">不限制</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="试卷出题类型"
+          show-overflow-tooltip
+        >
+          <template v-if="scope.row.userSet" slot-scope="scope">
+            <el-tag v-if="scope.row.userSet.question_type === 1" type="success">只出新题</el-tag>
+            <el-tag v-if="scope.row.userSet.question_type === 2" type="warning">只出错题</el-tag>
+            <el-tag v-if="scope.row.userSet.question_type === 3" type="danger">新题加错题</el-tag>
+            <el-tag v-if="scope.row.userSet.question_type === 4" type="info">不限制</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="点赞数"
+          prop="create_time"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="center"
+          label="收藏数"
+          prop="create_time"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="center"
+          label="评论数"
+          prop="create_time"
           show-overflow-tooltip
         />
         <el-table-column
@@ -72,11 +114,17 @@
           align="center"
           fixed="right"
           label="操作"
-          width="200"
+          width="250"
         >
           <template slot-scope="scope">
-            <el-button icon="el-icon-view" size="mini" type="info" @click="onHandleShowDetail(scope.row.id)">详情
-            </el-button>
+            <el-row>
+              <el-button class="el-icon-s-comment" size="mini" type="primary" @click="onHandleToPage('CommentList',scope.row.id)">评论列表</el-button>
+              <el-button class="el-icon-star-on" size="mini" type="success" @click="onHandleToPage('StarList',scope.row.id)">收藏列表</el-button>
+            </el-row>
+            <el-row style="margin-top: 10px">
+              <el-button class="el-icon-s-release" size="mini" type="info" @click="onHandleToPage('QuestionRecord',scope.row.id)">做题记录</el-button>
+              <el-button class="el-icon-thumb" size="mini" type="warning" @click="onHandleToPage('LikeList',scope.row.id)">点赞列表</el-button>
+            </el-row>
           </template>
         </el-table-column>
       </el-table>
@@ -179,11 +227,12 @@ export default {
       await this.getAppletUserData()
     },
     /**
-     * 跳转到详情页
+     * 跳转到指定页面
+     * @param pageName
      * @param id
      */
-    onHandleShowDetail(id) {
-      console.log('用户id', id)
+    onHandleToPage(pageName, id) {
+      this.$router.push({ name: pageName, params: { userId: id }})
     }
   }
 }

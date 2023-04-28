@@ -88,7 +88,7 @@
           label="所属视频/文章"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">
+          <template v-if="scope.row.article_id || scope.row.video_id" slot-scope="scope">
             <el-link v-if="scope.row.video_id" @click="onHandleGoToSource('video',scope.row.video_id)">
               {{ scope.row.video.title }}
             </el-link>

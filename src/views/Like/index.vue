@@ -174,11 +174,20 @@ export default {
   methods: {
     /**
      * 获取点赞列表
+     * @param isPage
      * @returns {Promise<void>}
      */
-    async getLiketData() {
+    async getLiketData(isPage = false) {
       this.loading = true
 
+      // 如果不是更改页码，则需要将分页数据重置
+      if (!isPage) {
+        this.searchForm = {
+          ...this.searchForm,
+          page: 1,
+          limit: 20
+        }
+      }
       const res = await getLikePage(this.searchForm)
       this.total = res.data.total
       this.commentData = res.data.data
@@ -198,7 +207,7 @@ export default {
      */
     async onHandleSizeChange(limit) {
       this.searchForm.limit = limit
-      await this.getLiketData()
+      await this.getLiketData(true)
     },
     /**
      * 修改当前页码数
@@ -206,7 +215,7 @@ export default {
      */
     async onHandleCurrentChange(page) {
       this.searchForm.page = page
-      await this.getLiketData()
+      await this.getLiketData(true)
     },
     /**
      * 批量删除点赞信息

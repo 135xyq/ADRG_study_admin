@@ -158,10 +158,21 @@ export default {
   methods: {
     /**
      * 获取分页数据
+     * @param isPage
      * @returns {Promise<void>}
      */
-    async getData() {
+    async getData(isPage = false) {
       this.loading = true
+
+      // 如果不是更改页码，则需要将分页数据重置
+      if (!isPage) {
+        this.form = {
+          ...this.form,
+          page: 1,
+          limit: 20
+        }
+      }
+
       // 获取分页数据
       const res = await page(this.form)
       this.total = res.data.total
@@ -234,7 +245,7 @@ export default {
      */
     async onHandleSizeChange(limit) {
       this.form.limit = limit
-      await this.getData()
+      await this.getData(true)
     },
     /**
      * 修改当前页码数
@@ -242,7 +253,7 @@ export default {
      */
     async onHandleCurrentChange(page) {
       this.form.page = page
-      await this.getData()
+      await this.getData(true)
     },
     /**
      * 关键词查询

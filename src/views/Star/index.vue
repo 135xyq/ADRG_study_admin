@@ -174,10 +174,20 @@ export default {
   methods: {
     /**
      * 获取收藏列表
+     * @param isPage
      * @returns {Promise<void>}
      */
-    async getStartData() {
+    async getStartData(isPage = false) {
       this.loading = true
+
+      // 如果不是更改页码，则需要将分页数据重置
+      if (!isPage) {
+        this.searchForm = {
+          ...this.searchForm,
+          page: 1,
+          limit: 20
+        }
+      }
 
       const res = await getStarPage(this.searchForm)
       this.total = res.data.total
@@ -198,7 +208,7 @@ export default {
      */
     async onHandleSizeChange(limit) {
       this.searchForm.limit = limit
-      await this.getStartData()
+      await this.getStartData(true)
     },
     /**
      * 修改当前页码数
@@ -206,7 +216,7 @@ export default {
      */
     async onHandleCurrentChange(page) {
       this.searchForm.page = page
-      await this.getStartData()
+      await this.getStartData(true)
     },
     /**
      * 批量删除收藏信息

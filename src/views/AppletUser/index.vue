@@ -47,6 +47,7 @@
           align="center"
           label="头像"
           prop="description"
+          width="150"
         >
           <template slot-scope="scope">
             <el-image
@@ -89,19 +90,25 @@
         <el-table-column
           align="center"
           label="点赞数"
-          prop="create_time"
+          prop="like_count"
           show-overflow-tooltip
         />
         <el-table-column
           align="center"
           label="收藏数"
-          prop="create_time"
+          prop="star_count"
           show-overflow-tooltip
         />
         <el-table-column
           align="center"
           label="评论数"
-          prop="create_time"
+          prop="comment_count"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="center"
+          label="出卷数"
+          prop="question_record_count"
           show-overflow-tooltip
         />
         <el-table-column

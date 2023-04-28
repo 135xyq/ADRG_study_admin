@@ -306,10 +306,20 @@ export default {
     formateDate,
     /**
      * 获取表格数据
+     * @param isPage
      * @returns {Promise<void>}
      */
-    async getQuestionData() {
+    async getQuestionData(isPage = false) {
       this.loading = true
+
+      // 如果不是更改页码，则需要将分页数据重置
+      if (!isPage) {
+        this.form = {
+          ...this.form,
+          page: 1,
+          limit: 20
+        }
+      }
 
       const res = await getQuestion(this.form)
       this.total = res.data.total
@@ -345,7 +355,7 @@ export default {
      */
     async onHandleSizeChange(limit) {
       this.form.limit = limit
-      await this.getQuestionData()
+      await this.getQuestionData(true)
     },
     /**
      * 修改当前页码数
@@ -353,7 +363,7 @@ export default {
      */
     async onHandleCurrentChange(page) {
       this.form.page = page
-      await this.getQuestionData()
+      await this.getQuestionData(true)
     },
     /**
      * 筛选信息改变重新获取数据

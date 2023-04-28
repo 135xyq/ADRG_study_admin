@@ -26,6 +26,17 @@
           </el-select>
         </el-form-item>
         <el-form-item>
+          <el-date-picker
+            v-model="searchForm.time"
+            end-placeholder="结束日期"
+            range-separator="至"
+            start-placeholder="开始日期"
+            type="daterange"
+            :default-time="['00:00:00', '23:59:59']"
+            @change="onHandleSearch"
+          />
+        </el-form-item>
+        <el-form-item>
           <el-button icon="el-icon-search" type="primary" @click="onHandleSearch">查询
           </el-button>
         </el-form-item>
@@ -133,7 +144,8 @@ export default {
         article: '',
         video: '',
         userName: '',
-        type: 'all'
+        type: 'all',
+        time: []
       }, // 查找数据
       total: 0, // 数据总量
       deleteIds: [], // 要删除收藏的列表
@@ -260,6 +272,7 @@ export default {
         video: '',
         userName: '',
         type: 'all',
+        time: [],
         page: 1,
         limit: 20
       }

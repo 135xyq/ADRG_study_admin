@@ -42,9 +42,9 @@ export const sort = [{
 
 export const parse = [{
   key: '有解析',
-  value: '1'
+  value: 1
 }, {
   key: '无解析',
-  value: '0'
+  value: 0
 }]
 

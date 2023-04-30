@@ -270,7 +270,7 @@ export default {
   computed: {
     getStatus() {
       return data => {
-        const status = data.status === 1 ? ' (已禁用)' : ''
+        const status = data.status === 0 ? ' (已禁用)' : ''
         return data.title + status
       }
     },

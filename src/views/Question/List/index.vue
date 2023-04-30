@@ -405,16 +405,19 @@ export default {
     },
     /**
      * 修改或新增成功的回调
+     * @param flag 是否修改了数据
      */
-    async onHandleCloseDialog() {
+    async onHandleCloseDialog(flag = false) {
       this.showEditDialog = false // 关闭弹窗
 
       // 初始化数据
       this.newForm = {}
       this.isEdit = false
 
-      // 重新获取数据
-      await this.getQuestionData()
+      if (flag) {
+        // 修改数据则重新获取数据
+        await this.getQuestionData()
+      }
     },
     /**
      * 批量删除题目

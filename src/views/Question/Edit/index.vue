@@ -2,10 +2,10 @@
   <el-dialog :title="isEdit ? '编辑' : '新增'" :visible.sync="dialogVisible" width="50%" @close="closeDialog">
     <el-form :model="form" size="medium">
       <el-form-item label="题目" label-width="100px">
-        <el-input v-model="form.title" autocomplete="off" type="textarea" placeholder="题目" />
+        <el-input v-model="form.title" autocomplete="off" placeholder="题目" type="textarea" />
       </el-form-item>
       <el-form-item label="类型" label-width="100px">
-        <el-select v-model="form.type" placeholder="题目类型">
+        <el-select v-model="form.type" placeholder="题目类型" @change="onHandleGetType">
           <el-option v-for="item in type" :key="item.key" :label="item.key" :value="item.value" />
         </el-select>
       </el-form-item>
@@ -15,7 +15,7 @@
           <div class="top">
             <el-row>
               <el-col :span="15">
-                <el-input v-model="newOption" placeholder="请输入新选项" type="textarea" autosize />
+                <el-input v-model="newOption" autosize placeholder="请输入新选项" type="textarea" />
               </el-col>
               <el-col :span="7" style="margin-left: 20px">
                 <el-button type="primary" @click="addOption">添加选项</el-button>
@@ -32,7 +32,7 @@
             >
               <el-row>
                 <el-col :span="10" class="col">
-                  <el-input v-model="option.value" placeholder="请输入选项内容" type="textarea" autosize />
+                  <el-input v-model="option.value" autosize placeholder="请输入选项内容" type="textarea" />
                 </el-col>
                 <el-col :span="4" class="col">
                   <el-button type="danger" @click="deleteOption(index)">删除选项</el-button>
@@ -49,15 +49,18 @@
         </div>
       </el-form-item>
       <el-form-item v-if="form.type === 0 || form.type === 1" label="答案" label-width="100px">
-        <el-checkbox-group v-model="form.answer">
+        <el-checkbox-group v-if="form.type === 1" v-model="form.answer">
           <el-checkbox v-for="item in answer" :key="item" :label="item" />
         </el-checkbox-group>
+        <el-radio-group v-else v-model="form.answer">
+          <el-radio v-for="item in answer" :key="item" :label="item" />
+        </el-radio-group>
       </el-form-item>
       <el-form-item v-else label="答案" label-width="100px">
-        <el-input v-model="otherAnswer" autocomplete="off" type="textarea" placeholder="答案" autosize />
+        <el-input v-model="otherAnswer" autocomplete="off" autosize placeholder="答案" type="textarea" />
       </el-form-item>
       <el-form-item label="解析" label-width="100px">
-        <el-input v-model="form.parse" autocomplete="off" type="textarea" placeholder="题目解析" autosize />
+        <el-input v-model="form.parse" autocomplete="off" autosize placeholder="题目解析" type="textarea" />
       </el-form-item>
       <el-form-item label="分类" label-width="100px">
         <el-select v-model="form.question_category_id" placeholder="题目分类">
@@ -81,7 +84,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogVisible = false">取 消</el-button>
-      <el-button type="primary" @click="onHandleSubmit">确 定</el-button>
+      <el-button :loading="loading" type="primary" @click="onHandleSubmit">确 定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -107,6 +110,7 @@ export default {
         status: 1,
         level: 0
       },
+      loading: false,
       category: [],
       newOption: '',
       otherAnswer: '', // 当为填空或简单时的答案
@@ -126,9 +130,11 @@ export default {
     },
     formData: {
       handler(val) {
+        // console.log(val)
         if (JSON.stringify(val) !== '{}') {
-          this.form = val
+          this.form = { ...val }
           if (this.form.options) {
+            this.options = []
             let index = 0
             for (const valKey in this.form.options) {
               index++
@@ -143,6 +149,11 @@ export default {
             if (val.answer.length > 0) {
               this.otherAnswer = val.answer[0]
             }
+          }
+
+          // 如果是单选则将答案组合
+          if (val.type === 0) {
+            this.form.answer = this.form.answer.length > 0 ? this.form.answer[0] : ''
           }
         }
       },
@@ -174,15 +185,17 @@ export default {
       }
       this.options = []
       this.otherAnswer = ''
+      this.loading = false
     },
     /**
      * 新增或修改完成
+     * @param flag 是否修改了数据
      */
-    closeDialog() {
+    closeDialog(flag) {
       // 重置数据
       this.initData()
 
-      this.$emit('closeEditDialog')
+      this.$emit('closeEditDialog', flag)
     },
     // 添加选项
     addOption() {
@@ -199,7 +212,20 @@ export default {
       const option = this.options.splice(oldIndex, 1)[0]
       this.options.splice(newIndex, 0, option)
     },
+    onHandleGetType(type) {
+      if (type === 0) {
+        this.form.answer = this.form.answer.length > 0 ? this.form.answer[0] : ''
+      } else if (type === 1) {
+        this.form.answer = this.form.answer.split('')
+      }
+    },
+    /**
+     * 提交修改或新增
+     * @returns {Promise<void>}
+     */
     async onHandleSubmit() {
+      this.loading = true
+
       const formData = { ...this.form }
 
       // 类型不合法
@@ -235,6 +261,9 @@ export default {
           })
           return
         }
+
+        //  转换答案的格式
+        formData.answer = formData.answer.split('')
       }
       if (formData.type === 1) {
         if (formData.answer.length < 2) {
@@ -244,6 +273,9 @@ export default {
           })
           return
         }
+
+        // 多选、对答案进行排序
+        formData.answer.sort()
       }
 
       // 填空题和简单题的答案不能为空
@@ -271,24 +303,32 @@ export default {
 
       // 编辑
       if (this.isEdit) {
-        const res = await updateQuestion(formData)
-        this.$message({
-          message: res.msg,
-          type: 'success'
+        updateQuestion(formData).then(res => {
+          this.$message({
+            message: res.msg,
+            type: 'success'
+          })
+          this.loading = false
+          // 完成操作
+          this.closeDialog(true)
+        }).catch(() => {
+          this.loading = false
         })
-
-        // 完成操作
-        this.closeDialog()
       } else {
         //   新增
-        const res = await addQuestion(formData)
-        this.$message({
-          message: res.msg,
-          type: 'success'
-        })
+        addQuestion(formData).then(res => {
+          this.$message({
+            message: res.msg,
+            type: 'success'
+          })
 
-        // 完成操作
-        this.closeDialog()
+          this.loading = false
+
+          // 完成操作
+          this.closeDialog(true)
+        }).catch(() => {
+          this.loading = false
+        })
       }
     }
   }

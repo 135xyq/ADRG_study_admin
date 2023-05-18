@@ -216,7 +216,9 @@ export default {
       if (type === 0) {
         this.form.answer = this.form.answer.length > 0 ? this.form.answer[0] : ''
       } else if (type === 1) {
+	if(typeof this.form.answer == 'string'){
         this.form.answer = this.form.answer.split('')
+}
       }
     },
     /**

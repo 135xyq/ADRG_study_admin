@@ -29,20 +29,6 @@
           />
         </el-col>
       </el-form-item>
-      <el-form-item label="是否自动审核用户名：">
-        <el-col :span="12">
-          <el-switch
-            v-model="configData.is_auto_check_user_name"
-            :active-value="1"
-            :inactive-value="0"
-            active-color="#13ce66"
-            active-text="开启自动审核"
-            inactive-color="#ff4949"
-            inactive-text="只能人工审核"
-            @change="onSubmit"
-          />
-        </el-col>
-      </el-form-item>
       <el-form-item label="敏感词(包含将无法通过审核)：">
         <el-col :span="12">
           <el-tag
@@ -63,7 +49,7 @@
             @blur="handleInputConfirm"
             @keyup.enter.native="handleInputConfirm"
           />
-          <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+          <el-button v-else class="button-new-tag" size="small" @click="showInput">新增敏感词</el-button>
         </el-col>
       </el-form-item>
       <el-form-item>
